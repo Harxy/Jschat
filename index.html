@@ -23,7 +23,12 @@
           });
           client.subscribe('/messages', function(message) {
             $('#output').prepend(message.name +': ' + message.text + '<br />');
-            $.titleAlert("New!");
+            $.titleAlert("New!", {
+              requireBlur:true,
+              stopOnFocus:true,
+              duration:4000,
+              interval:700  
+            });
           });
         });
       </script>
