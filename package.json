@@ -1,0 +1,16 @@
+{
+  "name": "jspractice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fayeclient.js",
+  "dependencies": {
+    "faye": "^1.1.2",
+    "node-static": "^0.7.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
