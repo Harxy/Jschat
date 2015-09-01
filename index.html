@@ -2,6 +2,7 @@
 <html>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="/jquery/jquery.titlealert.js"></script>
     <script src="/faye.js"></script>
   </head>
   <body>
@@ -21,7 +22,8 @@
               }
           });
           client.subscribe('/messages', function(message) {
-            $('#output').prepend(message.name +': ' + message.text + '<br />')
+            $('#output').prepend(message.name +': ' + message.text + '<br />');
+            $.titleAlert("New!");
           });
         });
       </script>
