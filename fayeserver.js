@@ -9,7 +9,6 @@ var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
 var file = new(statix.Server)('.');
 
 var server = http.createServer(function(request, response) {
-    console.log('accessing');
     request.addListener('end', function() {
         file.serve(request, response);
     }).resume();

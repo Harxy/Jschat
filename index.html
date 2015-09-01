@@ -5,6 +5,7 @@
     <script src="/faye.js"></script>
   </head>
   <body>
+    <input type='text' id='name' placeholder='add your name' />
     <input type='text' id='input' placeholder='type and press enter' />
       <div id='output'></div>
       <script>
@@ -13,13 +14,14 @@
           $('#input').keyup(function(e){
             if (e.keyCode === 13) {
               client.publish('/messages', {
-                text: $('#input').val()
+                text: $('#input').val(),
+                name: $('#name').val()
               });
               $('#input').val('');
               }
           });
           client.subscribe('/messages', function(message) {
-            $('#output').prepend(message.text + '<br />')
+            $('#output').prepend(message.name +': ' + message.text + '<br />')
           });
         });
       </script>
