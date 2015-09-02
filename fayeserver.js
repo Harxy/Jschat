@@ -59,7 +59,6 @@ var diceRollExtension = function(diceMeKeyword) {
                 callback(message);
                 return;
             }
-
             var param = message.data.text.slice(diceMeKeyword.length).trim();
             request({
                 url: "http://roll.diceapi.com/json/" + (param ? param : "d6"),
@@ -82,7 +81,7 @@ var diceRollExtension = function(diceMeKeyword) {
 
 bayeux.attach(server);
 bayeux.addExtension(gifMeExtension);
-bayeux.addExtension(diceRollExtension("roll dice"));
+bayeux.addExtension(diceRollExtension("dice me"));
 var port = process.env.PORT || 8001;
 server.listen(port);
 console.log('listening on: ' + port);
