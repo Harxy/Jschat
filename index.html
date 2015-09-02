@@ -25,8 +25,8 @@
           console.log (window.location.href);
           var client = new Faye.Client('/faye');
           $('#input').keyup(function(e){
-            var message = $('#input').val();
-            if (e.keyCode === 13 && message != null && message !='') {
+            var message = $('#input').val().trim();
+            if (e.keyCode === 13 && message) {
               client.publish('/messages', {
                 text: message,
                 name: $('#name').val()
