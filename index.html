@@ -4,11 +4,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="/jquery/jquery.titlealert.js"></script>
     <script src="/faye.js"></script>
+    <link rel='stylesheet' href='style.css' />
   </head>
   <body>
-    <input type='text' id='name' placeholder='add your name' />
-    <input type='text' id='input' placeholder='type and press enter' />
-      <div id='output'></div>
+    <div class='header'>
+      <input type='text' id='name' placeholder='add your name' value='Anon' />
+      <input type='text' id='input' placeholder='type and press enter' />
+    </div>
+    <div class='info'>
+      <p> Please change your name above! </p>
+      <p> This is now fully open source! Please see our <a href='https://waffle.io/Harxy/Jschat/join'> waffleboard </a> to see how you can contribute. </p>
+    </div>
+    <div id='output'></div>
       <script>
         $(function() {
           var client = new Faye.Client('/faye');
