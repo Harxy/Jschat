@@ -30,7 +30,8 @@
               }
           });
           client.subscribe('/messages', function(message) {
-            $('#output').prepend('<p>' + message.name +': ' + message.text + '</p>');
+            var escapedMessage = $("<div>").text(message.text).html();
+            $('#output').prepend('<p>' + message.name +': ' + escapedMessage + '</p>');
             $.titleAlert("New!", {
               requireBlur:true,
               stopOnFocus:true,
