@@ -5,7 +5,8 @@
   "main": "fayeclient.js",
   "dependencies": {
     "faye": "^1.1.2",
-    "node-static": "^0.7.7"
+    "node-static": "^0.7.7",
+    "request": "^2.61.0"
   },
   "devDependencies": {},
   "scripts": {
