@@ -1,0 +1,17 @@
+.header {
+width: auto;
+padding: 2px;
+}
+#name {
+margin-left: 3px;
+}
+
+#input {
+float: left;
+width: 70%;
+}
+
+.info {
+  float:right;
+  width: 29%;
+}
