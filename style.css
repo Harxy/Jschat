@@ -6,12 +6,23 @@ padding: 2px;
 margin-left: 3px;
 }
 
+#output p {
+  padding: 0px;
+  margin-bottom: 3px;
+  margin-top: 3px;
+  width:75%;
+}
+
+#output p:nth-child(even) {
+    background-color: #fafafa;
+}
+
 #input {
 float: left;
-width: 70%;
+width: 75%;
 }
 
 .info {
   float:right;
-  width: 29%;
+  width: 24%;
 }
