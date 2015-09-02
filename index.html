@@ -21,13 +21,15 @@
           console.log (window.location.href);
           var client = new Faye.Client('/faye');
           $('#input').keyup(function(e){
-            if (e.keyCode === 13) {
+            var message = $('#input').val();
+            if (e.keyCode === 13 && message != null && message !='') {
               client.publish('/messages', {
-                text: $('#input').val(),
+                text: message,
                 name: $('#name').val()
               });
+
               $('#input').val('');
-              }
+            }
           });
           client.subscribe('/messages', function(message) {
             $('#output').prepend('<p>' + message.name +': ' + message.text + '</p>');
