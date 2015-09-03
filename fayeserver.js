@@ -4,6 +4,7 @@ var    statix = require('node-static'),
        request = require("request"),
        diceRollExtension = require("./extensions/dice-roll"),
        gifMeExtension = require("./extensions/gif-me");
+       roomMeExtension = require("./extensions/room-me");
 
 var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
 
@@ -29,6 +30,7 @@ var scriptFilterExtension = {
 bayeux.attach(server);
 bayeux.addExtension(scriptFilterExtension);
 bayeux.addExtension(gifMeExtension);
+// bayeux.addExtension(roomMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
 var port = process.env.PORT || 8001;
 server.listen(port);
@@ -54,7 +56,7 @@ String.prototype.filterOutScriptTags = function () {
             i = i + 9;
         // else, use the scriptTagLevel to determine whether to include the text or not
         } else {
-            if (scriptTagLevel == 0) {
+            if (scriptTagLevel === 0) {
                 result += str[i];
             }
 
