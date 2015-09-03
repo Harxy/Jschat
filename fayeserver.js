@@ -38,7 +38,7 @@ var messageLogging = {
         if (message.data && message.data.text) {
             var room = message.channel.slice(message.channel.lastIndexOf('/') + 1);
             var dataStoreId = 'messages.' + room;
-            var messagesToKeep = 30;
+            var messagesToKeep = 45;
             var currentMessages = dataStore.getItem(dataStoreId);
             if (!currentMessages)
                 currentMessages = [];
