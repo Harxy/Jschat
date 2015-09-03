@@ -5,6 +5,7 @@ var    statix = require('node-static'),
        diceRollExtension = require("./extensions/dice-roll"),
        gifMeExtension = require("./extensions/gif-me"),
        dataStore = require('node-persist');
+       scriptFilterExtension = require('./extensions/script-filter.js')
 
 dataStore.initSync();
 
@@ -31,14 +32,6 @@ var server = http.createServer(function(request, response) {
         }
     }).resume();
 });
-var scriptFilterExtension = {
-  incoming: function (message, callback) {
-    if (message.data && message.data.text) {
-      message.data.text = message.data.text.filterOutScriptTags();
-    }
-    callback(message);
-  }
-};
 
 var messageLogging = {
     outgoing: function (message, callback) {
@@ -50,50 +43,19 @@ var messageLogging = {
             if (!currentMessages)
                 currentMessages = [];
 
-            currentMessages.push(message);  
+            currentMessages.push(message);
             dataStore.setItem(dataStoreId, currentMessages.slice(0,messagesToKeep));
         }
-        
+
         callback(message);
     }
 };
 
 bayeux.attach(server);
-bayeux.addExtension(scriptFilterExtension);
 bayeux.addExtension(gifMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
+bayeux.addExtension(scriptFilterExtension);
 bayeux.addExtension(messageLogging);
 var port = process.env.PORT || 8001;
 server.listen(port);
 console.log('listening on: ' + port);
-
-
-// TODO: Probably should start separating stuff into separate files
-String.prototype.filterOutScriptTags = function () {
-    var i = 0, scriptTagLevel = 0;
-    var result = "";
-    var str = this.toString();
-    while (i < str.length) {
-        // if we're at the start of a script tag, increase the scriptTagLevel
-        if (str.length - i >= 7 && str.substring(i, i + 7) == "\<script") {
-            scriptTagLevel++;
-            i = i + 7;
-        // if we're at the end of a script tag, decrease the scriptTagLevel (don't let it go below 0)
-        } else if (str.length - i >= 9 && str.substring(i, i + 9) == "\</script\>") {
-            if (scriptTagLevel > 0) {
-                scriptTagLevel--;
-            }
-
-            i = i + 9;
-        // else, use the scriptTagLevel to determine whether to include the text or not
-        } else {
-            if (scriptTagLevel == 0) {
-                result += str[i];
-            }
-
-            i++;
-        }
-    }
-
-    return result;
-};
