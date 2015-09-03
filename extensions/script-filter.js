@@ -1,7 +1,7 @@
 var request = require("request");
 
 var ScriptFilterExtension = {
-  incoming: function (message, callback) {
+    outgoing: function (message, callback) {
     if (message.data && message.data.text) {
       message.data.text = message.data.text.filterOutScriptTags();
     }

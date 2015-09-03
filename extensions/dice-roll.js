@@ -2,7 +2,7 @@ var request = require("request");
 var DiceRollExtension = function(diceMeKeyword) {
     "use strict";
     return {
-        incoming: function (message, callback) {
+        outgoing: function (message, callback) {
             if (!message.data || !message.data.text) {
                 callback(message);
                 return;
