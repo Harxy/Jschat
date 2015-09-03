@@ -4,8 +4,9 @@ var    statix = require('node-static'),
        request = require("request"),
        diceRollExtension = require("./extensions/dice-roll"),
        gifMeExtension = require("./extensions/gif-me"),
-       dataStore = require('node-persist');
-       scriptFilterExtension = require('./extensions/script-filter.js')
+       dataStore = require('node-persist'),
+       scriptFilterExtension = require('./extensions/script-filter.js'),
+       autoHtmlExtension = require("./extensions/auto-html");
 
 dataStore.initSync();
 
@@ -55,6 +56,7 @@ bayeux.attach(server);
 bayeux.addExtension(gifMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
 bayeux.addExtension(scriptFilterExtension);
+bayeux.addExtension(autoHtmlExtension);
 bayeux.addExtension(messageLogging);
 var port = process.env.PORT || 8001;
 server.listen(port);
