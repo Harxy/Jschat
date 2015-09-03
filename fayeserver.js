@@ -9,7 +9,10 @@ var file = new(statix.Server)('.');
 
 var server = http.createServer(function(request, response) {
     request.addListener('end', function() {
-        file.serve(request, response);
+      if (request.url.indexOf('/rooms/') === 0)
+            file.serveFile('/index.html', 200, {}, request, response);
+        else
+            file.serve(request, response);
     }).resume();
 });
 

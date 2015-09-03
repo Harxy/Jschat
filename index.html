@@ -4,7 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="/jquery/jquery.titlealert.js"></script>
     <script src="/faye.js"></script>
-    <link rel='stylesheet' href='style.css' />
+    <link rel='stylesheet' href='/style.css' />
   </head>
   <body>
     <div class='header'>
@@ -14,7 +14,8 @@
     <div class='info'>
       <p> Please change your name above! </p>
       <p> <b> Welcome to chatjs </b> </p>
-      <p> All html will work, and embedding in iframes and other fun stuff. Experiment! </p>
+      <p> Join any room you like by adding '/room/[anything]' and see who's chatting there! Give that link to people to chat in that room </p>
+      <p> All html will work, and embedding in iframes and other fun stuff (although script tags have been disabled). Experiment! </p>
       <p> You can use 'gif me [keyword]' to create gifs (without the quotes) </p>
       <p> You can use 'dice me [diceType]' to roll dice! See the <a href='https://github.com/meadsteve/DiceApi'>readme</a> for more information on the type of dice you can use</p>
       <p> This is now fully open source! Please see our <a href='https://waffle.io/Harxy/Jschat/join'> waffleboard </a> to see how you can contribute. </p>
@@ -22,12 +23,13 @@
     <div id='output'></div>
       <script>
         $(function() {
-          console.log (window.location.href);
+          var roomArray = window.location.pathname.split( '/' );
+          roomName = roomArray[2];
           var client = new Faye.Client('/faye');
           $('#input').keyup(function(e){
             var message = $('#input').val();
             if (e.keyCode === 13 && message != null && message !='') {
-              client.publish('/messages', {
+              client.publish('/rooms/' + roomName, {
                 text: message,
                 name: $('#name').val()
               });
@@ -35,7 +37,7 @@
               $('#input').val('');
             }
           });
-          client.subscribe('/messages', function(message) {
+          client.subscribe('/rooms/' + roomName, function(message) {
             $('#output').prepend('<p>' + message.name +': ' + message.text + '</p>');
             $.titleAlert("New!", {
               requireBlur:true,
