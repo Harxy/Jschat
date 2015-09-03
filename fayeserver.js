@@ -34,7 +34,7 @@ var server = http.createServer(function(request, response) {
 });
 
 var messageLogging = {
-    outgoing: function (message, callback) {
+    incoming: function (message, callback) {
         if (message.data && message.data.text) {
             var room = message.channel.slice(message.channel.lastIndexOf('/') + 1);
             var dataStoreId = 'messages.' + room;
@@ -44,7 +44,7 @@ var messageLogging = {
                 currentMessages = [];
 
             currentMessages.push(message);
-            dataStore.setItem(dataStoreId, currentMessages.slice(0,messagesToKeep));
+            dataStore.setItem(dataStoreId, currentMessages.slice(currentMessages.length-messagesToKeep));
         }
 
         callback(message);
