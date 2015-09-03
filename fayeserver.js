@@ -4,8 +4,9 @@ var    statix = require('node-static'),
        request = require("request"),
        diceRollExtension = require("./extensions/dice-roll"),
        gifMeExtension = require("./extensions/gif-me"),
-       dataStore = require('node-persist');
-       scriptFilterExtension = require('./extensions/script-filter.js')
+       dataStore = require('node-persist'),
+       scriptFilterExtension = require('./extensions/script-filter.js'),
+       messageLogging = require('./extensions/message-logger.js');
 
 dataStore.initSync();
 
@@ -33,29 +34,12 @@ var server = http.createServer(function(request, response) {
     }).resume();
 });
 
-var messageLogging = {
-    incoming: function (message, callback) {
-        if (message.data && message.data.text) {
-            var room = message.channel.slice(message.channel.lastIndexOf('/') + 1);
-            var dataStoreId = 'messages.' + room;
-            var messagesToKeep = 30;
-            var currentMessages = dataStore.getItem(dataStoreId);
-            if (!currentMessages)
-                currentMessages = [];
-
-            currentMessages.push(message);
-            dataStore.setItem(dataStoreId, currentMessages.slice(currentMessages.length-messagesToKeep));
-        }
-
-        callback(message);
-    }
-};
-
 bayeux.attach(server);
+bayeux.addExtension(scriptFilterExtension);
 bayeux.addExtension(gifMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
-bayeux.addExtension(scriptFilterExtension);
-bayeux.addExtension(messageLogging);
+bayeux.addExtension(messageLogging(dataStore));
+
 var port = process.env.PORT || 8001;
 server.listen(port);
 console.log('listening on: ' + port);
