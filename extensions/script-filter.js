@@ -39,5 +39,4 @@ String.prototype.filterOutScriptTags = function () {
     return result;
 };
 
-module.exports = ScriptFilterExtension
-
+module.exports = ScriptFilterExtension;
