@@ -38,7 +38,7 @@
             }
           });
           client.subscribe('/rooms/' + roomName, function(message) {
-            $('#output').prepend('<p>' + message.name +': ' + message.text + '</p>');
+             addToScreen(message.name, message.text);
             $.titleAlert("New!", {
               requireBlur:true,
               stopOnFocus:true,
@@ -46,8 +46,25 @@
               interval:700
             });
           });
+
+          $.getJSON("/history/" + roomName, function (data) {
+              // var items = [];
+              $.each(data, function (key, val) {
+                  addToScreen(data[key].data.name, data[key].data.text);
+              });
+
+
+          });
+
           $('#input').focus();
         });
+
+       
+
+
+          function addToScreen(name, message) {
+              $('#output').prepend('<p>' + name + ': ' + message + '</p>');
+          }
       </script>
   </body>
 </html>
