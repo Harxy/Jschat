@@ -20,7 +20,6 @@ var server = http.createServer(function(request, response) {
 });
 
 bayeux.attach(server);
-bayeux.addExtension(scriptFilterExtension);
 bayeux.addExtension(gifMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
 bayeux.addExtension(scriptFilterExtension);
