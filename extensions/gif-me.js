@@ -1,6 +1,6 @@
 var request = require("request");
 var GifMeExtension = {
-    incoming: function (message, callback) {
+    outgoing: function (message, callback) {
         var dontSend = false;
 
         if (message.data && message.data.text) {
