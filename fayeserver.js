@@ -47,6 +47,14 @@ var gifMeExtension = {
             callback(message);
     }
 };
+var scriptFilterExtension = {
+  incoming: function (message, callback) {
+      if (message.data && message.data.text) {
+        message.data.text = message.data.text.filterOutScriptTags();
+      }
+      callback(message);
+    }
+  };
 
 var diceRollExtension = function(diceMeKeyword) {
     return {
@@ -80,6 +88,7 @@ var diceRollExtension = function(diceMeKeyword) {
 };
 
 bayeux.attach(server);
+bayeux.addExtension(scriptFilterExtension);
 bayeux.addExtension(gifMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
 var port = process.env.PORT || 8001;
