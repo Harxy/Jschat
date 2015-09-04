@@ -37,7 +37,7 @@ function setTheme(theme) {
     $('body').removeClass();
     $('body').addClass(theme);
 
-    createCookie("theme", theme);   
+    createCookie("theme", theme, 30);   
 }
 
 function getLastTheme() {
@@ -71,7 +71,7 @@ function sendMessage(client, roomName, username, message) {
         timeString: timeString
     });
 
-    createCookie("username", username);
+    createCookie("username", username, 30);
 }
 
 function loadHistory() {
