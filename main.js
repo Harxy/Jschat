@@ -3,13 +3,14 @@
     roomName = roomArray[2];
     var client = new Faye.Client('/faye');
     
-    setUsername();
+    getLastUsername();
+    getLastTheme();
+
     subscribeToRoom(client, roomName);
     loadHistory();
 
     $('#theme-picker').change(function () {
-        $('body').removeClass();
-        $('body').addClass(this.value);
+        setTheme(this.value);
     });
     $('#input').keyup(function (e) {
         var message = $('#input').val();
@@ -20,16 +21,33 @@
         }
     });
 
+
     $('#input').focus();
 });
 
-function setUsername() {
+function getLastUsername() {
     var userName = readCookie("username");
     if (userName)
         $('#name').val(userName);
     else
         $('#name').val("Anon");
 }
+
+function setTheme(theme) {
+    $('body').removeClass();
+    $('body').addClass(theme);
+
+    createCookie("theme", theme);   
+}
+
+function getLastTheme() {
+    var storedTheme = readCookie("theme");
+    if (storedTheme) {
+        $('#theme-picker').val(storedTheme);
+        setTheme(storedTheme);
+    }
+}
+
 
 function subscribeToRoom(client, roomName) {
     client.subscribe('/rooms/' + roomName, function (message) {
