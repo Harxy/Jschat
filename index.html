@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class='header'>
-      <input type='text' id='name' placeholder='add your name' value='Anon' />
+      <input type='text' id='name' placeholder='add your name' value='' />
       <input type='text' id='input' placeholder='type and press enter' />
     </div>
     <div class='info'>
@@ -23,50 +23,6 @@
       <p> This is now fully open source! Please see our <a target="_blank" href='https://waffle.io/Harxy/Jschat/join'> waffleboard </a> to see how you can contribute. </p>
     </div>
     <div id='output'></div>
-      <script>
-        $(function() {
-          var roomArray = window.location.pathname.split( '/' );
-          roomName = roomArray[2];
-          var client = new Faye.Client('/faye');
-          $('#input').keyup(function(e){
-            var message = $('#input').val();
-            if (e.keyCode === 13 && message != null && message !='') {
-              client.publish('/rooms/' + roomName, {
-                text: message,
-                name: $('#name').val()
-              });
-
-              $('#input').val('');
-            }
-          });
-          client.subscribe('/rooms/' + roomName, function(message) {
-             addToScreen(message.name, message.text);
-            $.titleAlert("New!", {
-              requireBlur:true,
-              stopOnFocus:true,
-              duration:15000,
-              interval:700
-            });
-          });
-
-          $.getJSON("/history/" + roomName, function (data) {
-              // var items = [];
-              $.each(data, function (key, val) {
-                  addToScreen(data[key].data.name, data[key].data.text);
-              });
-
-
-          });
-
-          $('#input').focus();
-        });
-
-       
-
-
-          function addToScreen(name, message) {
-              $('#output').prepend('<p>' + name + ': ' + message + '</p>');
-          }
-      </script>
+      <script type="text/javascript" src="/main.js"></script>
   </body>
 </html>
