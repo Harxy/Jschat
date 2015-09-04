@@ -76,6 +76,7 @@ function sendMessage(client, roomName, username, message) {
 
 function loadHistory() {
     $.getJSON("/history/" + roomName, function (data) {
+        data.reverse();
         $.each(data, function (key, val) {
             addToScreen(data[key].data.name, data[key].data.text, data[key].data.timeString);
         });

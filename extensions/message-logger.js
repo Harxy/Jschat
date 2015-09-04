@@ -9,8 +9,8 @@ var MessageLogger = function(dataStore) {
                 if (!currentMessages)
                     currentMessages = [];
 
-                currentMessages.push(message);
-                dataStore.setItem(dataStoreId, currentMessages.slice(currentMessages.length-messagesToKeep));
+                currentMessages.unshift(message);
+                dataStore.setItem(dataStoreId, currentMessages.slice(0, messagesToKeep));
             }
 
             callback(message);
