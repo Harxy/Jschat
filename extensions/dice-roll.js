@@ -33,7 +33,7 @@ var DiceRollExtension = function(diceMeKeyword) {
                 json: true
             }, function(error, response, body) {
                 message.data.name = "dice master";
-                if (!error && response.statusCode === 200) {
+                if (!error && response.statusCode === 200 && response.body.dice) {
                     var diceResult = formatDiceResult(response.body.dice);
                     var diceRolled = formatDiceRoll(response.body.dice);
                     message.data.text = 'Rolling: ' + diceRolled + '. The result was: ' + diceResult;
