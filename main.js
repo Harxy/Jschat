@@ -7,6 +7,10 @@
     subscribeToRoom(client, roomName);
     loadHistory();
 
+    $('#theme-picker').change(function () {
+        $('body').removeClass();
+        $('body').addClass(this.value);
+    });
     $('#input').keyup(function (e) {
         var message = $('#input').val();
         var userName = $('#name').val();
@@ -29,7 +33,7 @@ function setUsername() {
 
 function subscribeToRoom(client, roomName) {
     client.subscribe('/rooms/' + roomName, function (message) {
-        addToScreen(message.name, message.text);
+        addToScreen(message.name, message.text, message.timeString);
         $.titleAlert("New!", {
             requireBlur: true,
             stopOnFocus: true,
@@ -40,9 +44,13 @@ function subscribeToRoom(client, roomName) {
 }
 
 function sendMessage(client, roomName, username, message) {
+    var time = new Date();
+    var timeString = time.toTimeString().split(' ')[0];
+
     client.publish('/rooms/' + roomName, {
         text: message,
-        name: username
+        name: username,
+        timeString: timeString
     });
 
     createCookie("username", username);
@@ -51,13 +59,13 @@ function sendMessage(client, roomName, username, message) {
 function loadHistory() {
     $.getJSON("/history/" + roomName, function (data) {
         $.each(data, function (key, val) {
-            addToScreen(data[key].data.name, data[key].data.text);
+            addToScreen(data[key].data.name, data[key].data.text, data[key].data.timeString);
         });
     });
 }
 
-function addToScreen(name, message) {
-    $('#output').prepend('<p>' + name + ': ' + message + '</p>');
+function addToScreen(name, message, timeString) {   
+    $('#output').prepend('<div class="message"><div class="name">' + name + '<span>' + timeString + '</span></div><div class="body">' + message + '</div></div>');
 }
 
 
