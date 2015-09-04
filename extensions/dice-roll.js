@@ -1,4 +1,20 @@
 var request = require("request");
+
+var formatDiceResult = function(dice) {
+   return dice
+        .map(function (dice) {
+            return dice.value;
+        })
+        .join(", ");
+};
+var formatDiceRoll = function(dice) {
+    return dice
+        .map(function (dice) {
+            return dice.size.toUpperCase();
+        })
+        .join(", ");
+};
+
 var DiceRollExtension = function(diceMeKeyword) {
     "use strict";
     return {
@@ -18,10 +34,9 @@ var DiceRollExtension = function(diceMeKeyword) {
             }, function(error, response, body) {
                 message.data.name = "dice master";
                 if (!error && response.statusCode === 200) {
-                  var diceResult = response.body.dice
-                    .map(function(dice){return dice.value;})
-                    .join(", ");
-                  message.data.text = 'The result was: ' + diceResult;
+                    var diceResult = formatDiceResult(response.body.dice);
+                    var diceRolled = formatDiceRoll(response.body.dice);
+                    message.data.text = 'Rolling: ' + diceRolled + '. The result was: ' + diceResult;
                 } else {
                   message.data.text = "Sorry something went wrong with my dice.";
                 }
