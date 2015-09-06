@@ -3,9 +3,9 @@ var GifMeExtension = {
     incoming: function (message, callback) {
         var dontSend = false;
 
+
         if (message.data && message.data.text) {
             var gifMeKeyword = "gif me";
-
             if (message.data.text.indexOf(gifMeKeyword) !== 0) {
                 callback(message);
                 return;

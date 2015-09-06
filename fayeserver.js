@@ -30,7 +30,7 @@ var scriptFilterExtension = {
 bayeux.attach(server);
 bayeux.addExtension(scriptFilterExtension);
 bayeux.addExtension(gifMeExtension);
-// bayeux.addExtension(roomMeExtension);
+bayeux.addExtension(roomMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
 var port = process.env.PORT || 8001;
 server.listen(port);
