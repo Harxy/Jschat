@@ -6,8 +6,9 @@ var    statix = require('node-static'),
        gifMeExtension = require("./extensions/gif-me"),
        dataStore = require('node-persist'),
        scriptFilterExtension = require('./extensions/script-filter.js'),
-       messageLogging = require('./extensions/message-logger.js');
-       autoHtmlExtension = require("./extensions/auto-html");
+       messageLogging = require('./extensions/message-logger.js'),
+       autoHtmlExtension = require("./extensions/auto-html"),
+       roomMeExtension = require("./extensions/room-me");
 
 dataStore.initSync();
 
@@ -39,6 +40,7 @@ bayeux.attach(server);
 bayeux.addExtension(scriptFilterExtension)
 bayeux.addExtension(autoHtmlExtension);
 bayeux.addExtension(gifMeExtension);
+bayeux.addExtension(roomMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
 bayeux.addExtension(messageLogging(dataStore));
 
