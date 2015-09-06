@@ -1,28 +1,106 @@
 .header {
-width: auto;
-padding: 2px;
+    width: auto;
+    padding: 2px;
 }
+
 #name {
-margin-left: 3px;
+    margin-left: 3px;
 }
 
 #output p {
-  padding: 0px;
-  margin-bottom: 3px;
-  margin-top: 3px;
-  width:75%;
+    padding: 0px;
+    margin-bottom: 3px;
+    margin-top: 3px;
+    width: 75%;
 }
 
-#output p:nth-child(even) {
-    background-color: #fafafa;
-}
+    #output p:nth-child(even) {
+        background-color: #fafafa;
+    }
 
 #input {
-float: left;
-width: 75%;
+    float: left;
+    width: 75%;
 }
 
 .info {
-  float:right;
-  width: 24%;
+    float: right;
+    width: 24%;
 }
+
+
+.chat-area {
+    width: 75%;
+}
+
+.message {
+    margin: 5px;
+}
+
+    .message .body img {
+        max-width: 250px;
+        max-height: 450px;
+    }
+
+
+    .message .name {
+        display: inline-block;
+        position: relative;
+        vertical-align: top;
+        font-weight: bold;
+    }
+
+        .message .name span:before {
+            content: " (";
+        }
+
+        .message .name span {
+            font-weight: normal;
+            font-size: 12px;
+        }
+
+            .message .name span:after {
+                content: "):";
+            }
+
+    .message .body {
+        margin-left: 5px;
+        display: inline-block;
+        position: relative;
+        width: -moz-calc(100% - 100px);
+        width: -webkit-calc(100% - 100px);
+        width: calc(100% - 100px);
+    }
+
+.bubble-theme .message .name {
+    width: 82px;
+    padding-top: 6px;
+}
+
+    .bubble-theme .message .name span {
+        display: block;
+    }
+
+.bubble-theme .message .body {
+    min-height: 22px;
+    padding: 7px 9px;
+    background: #E8CE6E;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    margin-left: 20px;
+    width:auto;
+}
+
+    .bubble-theme .message .body:after {
+        content: '';
+        position: absolute;
+        border-style: solid;
+        border-width: 10px 20px 10px 0;
+        border-color: transparent #E8CE6E;
+        display: block;
+        width: 0;
+        z-index: 1;
+        left: -20px;
+        top: 7px;
+    }

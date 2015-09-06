@@ -1,5 +1,5 @@
-var linkRegex = /[^'"]?((https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?)/gi;
-var imageLinkRegex = /(<a[^>]+>)(.+\.(png|gif|jpg))<\/a>/gi;
+var linkRegex = /((https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?)/gi;
+var imageLinkRegex = /(<a[^>]+>)([^<]+\.(png|gif|jpg))<\/a>/gi;
 
 var linkifyUrls = function(text) {
     return text.replace(linkRegex, "<a href='$1' target='_blank'>$1</a>");

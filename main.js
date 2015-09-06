@@ -3,10 +3,15 @@
     roomName = roomArray[2];
     var client = new Faye.Client('/faye');
     
-    setUsername();
+    getLastUsername();
+    getLastTheme();
+
     subscribeToRoom(client, roomName);
     loadHistory();
 
+    $('#theme-picker').change(function () {
+        setTheme(this.value);
+    });
     $('#input').keyup(function (e) {
         var message = $('#input').val();
         var userName = $('#name').val();
@@ -16,10 +21,11 @@
         }
     });
 
+
     $('#input').focus();
 });
 
-function setUsername() {
+function getLastUsername() {
     var userName = readCookie("username");
     if (userName)
         $('#name').val(userName);
@@ -27,9 +33,25 @@ function setUsername() {
         $('#name').val("Anon");
 }
 
+function setTheme(theme) {
+    $('body').removeClass();
+    $('body').addClass(theme);
+
+    createCookie("theme", theme, 30);   
+}
+
+function getLastTheme() {
+    var storedTheme = readCookie("theme");
+    if (storedTheme) {
+        $('#theme-picker').val(storedTheme);
+        setTheme(storedTheme);
+    }
+}
+
+
 function subscribeToRoom(client, roomName) {
     client.subscribe('/rooms/' + roomName, function (message) {
-        addToScreen(message.name, message.text);
+        addToScreen(message.name, message.text, message.timeString);
         $.titleAlert("New!", {
             requireBlur: true,
             stopOnFocus: true,
@@ -40,24 +62,29 @@ function subscribeToRoom(client, roomName) {
 }
 
 function sendMessage(client, roomName, username, message) {
+    var time = new Date();
+    var timeString = time.toTimeString().split(' ')[0];
+
     client.publish('/rooms/' + roomName, {
         text: message,
-        name: username
+        name: username,
+        timeString: timeString
     });
 
-    createCookie("username", username);
+    createCookie("username", username, 30);
 }
 
 function loadHistory() {
     $.getJSON("/history/" + roomName, function (data) {
+        data.reverse();
         $.each(data, function (key, val) {
-            addToScreen(data[key].data.name, data[key].data.text);
+            addToScreen(data[key].data.name, data[key].data.text, data[key].data.timeString);
         });
     });
 }
 
-function addToScreen(name, message) {
-    $('#output').prepend('<p>' + name + ': ' + message + '</p>');
+function addToScreen(name, message, timeString) {   
+    $('#output').prepend('<div class="message"><div class="name">' + name + '<span>' + timeString + '</span></div><div class="body">' + message + '</div></div>');
 }
 
 
