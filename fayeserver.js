@@ -40,7 +40,7 @@ bayeux.attach(server);
 bayeux.addExtension(scriptFilterExtension)
 bayeux.addExtension(autoHtmlExtension);
 bayeux.addExtension(gifMeExtension);
-// bayeux.addExtension(roomMeExtension);
+bayeux.addExtension(roomMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
 bayeux.addExtension(messageLogging(dataStore));
 
