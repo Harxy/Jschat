@@ -37,7 +37,7 @@ var server = http.createServer(function(request, response) {
 });
 
 bayeux.attach(server);
-bayeux.addExtension(scriptFilterExtension)
+bayeux.addExtension(scriptFilterExtension);
 bayeux.addExtension(autoHtmlExtension);
 bayeux.addExtension(gifMeExtension);
 bayeux.addExtension(roomMeExtension);

@@ -13,7 +13,7 @@ var RoomMeExtension = {
 
             dontSend = true;
             var param = message.data.text.slice(roomMeKeyword.length).trim();
-            message.data.text = message.data.text = "<a href='/rooms/" + param. toLowerCase() + "'>" + param + "</a>";
+            message.data.text = message.data.text = "<a href='/rooms/" + param.toLowerCase() + "'>" + param + "</a>";
             callback(message);
         }
 
