@@ -2,7 +2,7 @@
     var roomArray = window.location.pathname.split('/');
     roomName = roomArray[2];
     var client = new Faye.Client('/faye');
-    
+
     getLastUsername();
     getLastTheme();
 
@@ -16,7 +16,7 @@
         var message = $('#input').val();
         var userName = $('#name').val();
         if (e.keyCode === 13 && message != null && message != '') {
-            sendMessage(client, roomName, userName, message);      
+            sendMessage(client, roomName, userName, message);
             $('#input').val('');
         }
     });
@@ -37,7 +37,7 @@ function setTheme(theme) {
     $('body').removeClass();
     $('body').addClass(theme);
 
-    createCookie("theme", theme, 30);   
+    createCookie("theme", theme, 30);
 }
 
 function getLastTheme() {
@@ -52,13 +52,14 @@ function getLastTheme() {
 function subscribeToRoom(client, roomName) {
     client.subscribe('/rooms/' + roomName, function (message) {
         addToScreen(message.name, message.text, message.timeString);
+        console.log('works');
         $.titleAlert("New!", {
             requireBlur: true,
-            stopOnFocus: true,
-            duration: 15000,
+            stopOnFocus: true,  
             interval: 700
         });
     });
+
 }
 
 function sendMessage(client, roomName, username, message) {
@@ -83,7 +84,7 @@ function loadHistory() {
     });
 }
 
-function addToScreen(name, message, timeString) {   
+function addToScreen(name, message, timeString) {
     $('#output').prepend('<div class="message"><div class="name">' + name + '<span>' + timeString + '</span></div><div class="body">' + message + '</div></div>');
 }
 
