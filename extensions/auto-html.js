@@ -9,7 +9,7 @@ var imagifyLinks = function(text) {
     return text.replace(imageLinkRegex, "$1<img src='$2' /></a>");
 };
 var roomifyLinks = function(text) {
-  return text.replace(roomMeRegex, "$1<a href='/rooms/$1'>#$2</a>");
+  return text.replace(roomMeRegex, "$1<a href='/rooms/$2'>#$2</a>");
 };
 
 var AutoHtmlExtension = {
