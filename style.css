@@ -104,3 +104,16 @@
         left: -20px;
         top: 7px;
     }
+
+
+.broken-theme div:nth-child(2n+1).message {
+    transform: rotate(-2deg);
+}
+.broken-theme div:nth-child(3n+4).message {
+    transform: rotate(-1deg);
+    font-size: smaller;
+}
+.broken-theme .message {
+    filter: opacity(66%);
+    -webkit-filter: opacity(66%);
+}
