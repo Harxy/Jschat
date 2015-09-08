@@ -117,3 +117,20 @@
     filter: opacity(66%);
     -webkit-filter: opacity(66%);
 }
+
+.broken-theme .message {
+    animation-duration: 1s;
+    animation-name: broken-appear;
+}
+
+@keyframes broken-appear {
+    from {
+        height: 0%;
+        font-size: xx-large;
+    }
+
+    to {
+        font-size: inherit;
+        height: 100%;
+    }
+}
