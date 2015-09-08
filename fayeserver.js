@@ -22,7 +22,7 @@ var server = http.createServer(function(request, response) {
         } else if (request.url.indexOf('/history/') === 0) {
             var room = request.url.slice(request.url.lastIndexOf('/') + 1);
             if (!room)
-                room = 'undefined';
+                room = 'Welcome';
 
             var dataStoreId = 'messages.' + room;
             var messages = dataStore.getItem(dataStoreId);

@@ -22,7 +22,10 @@
     float: left;
     width: 75%;
 }
-
+.backbutton {
+  padding: 2px;
+  font-weight: bold;
+}
 .info {
     float: right;
     width: 24%;
