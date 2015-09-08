@@ -107,3 +107,33 @@
         left: -20px;
         top: 7px;
     }
+
+
+.broken-theme div:nth-child(2n+1).message {
+    transform: rotate(-2deg);
+}
+.broken-theme div:nth-child(3n+4).message {
+    transform: rotate(-1deg);
+    font-size: smaller;
+}
+.broken-theme .message {
+    filter: opacity(66%);
+    -webkit-filter: opacity(66%);
+}
+
+.broken-theme .message {
+    animation-duration: 1s;
+    animation-name: broken-appear;
+}
+
+@keyframes broken-appear {
+    from {
+        height: 0%;
+        font-size: xx-large;
+    }
+
+    to {
+        font-size: inherit;
+        height: 100%;
+    }
+}
