@@ -9,6 +9,9 @@
     subscribeToRoom(client, roomName);
     loadHistory();
 
+    setLastRoomName();
+    createCookie("lastRoom", roomName, 30);
+
     $('#theme-picker').change(function () {
         setTheme(this.value);
     });
@@ -52,10 +55,9 @@ function getLastTheme() {
 function subscribeToRoom(client, roomName) {
     client.subscribe('/rooms/' + roomName, function (message) {
         addToScreen(message.name, message.text, message.timeString);
-        console.log('works');
         $.titleAlert("New!", {
             requireBlur: true,
-            stopOnFocus: true,  
+            stopOnFocus: true,
             interval: 700
         });
     });
@@ -73,6 +75,7 @@ function sendMessage(client, roomName, username, message) {
     });
 
     createCookie("username", username, 30);
+
 }
 
 function loadHistory() {
@@ -112,4 +115,12 @@ function readCookie(name) {
 
 function eraseCookie(name) {
     createCookie(name, "", -1);
+}
+
+function setLastRoomName() {
+  var lastRoom = readCookie("lastRoom");
+  if (lastRoom != 'undefined')
+      $('#lastRoom').html("Back to <a href='/rooms/" + lastRoom + "'>#" + lastRoom + "</a>");
+  else
+      $('#lastRoom').html("Go <a href='/'>#home</a>");
 }
