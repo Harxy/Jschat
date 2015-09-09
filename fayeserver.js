@@ -1,7 +1,6 @@
 var    statix = require('node-static'),
        http = require('http'),
        Faye = require('faye'),
-       request = require("request"),
        diceRollExtension = require("./extensions/dice-roll"),
        gifMeExtension = require("./extensions/gif-me"),
        nodePersistStorage = require('./storage/node-persist-messages'),
@@ -10,13 +9,14 @@ var    statix = require('node-static'),
        messageLogging = require('./extensions/message-logger.js'),
        autoHtmlExtension = require("./extensions/auto-html");
 
+var dataStore;
 if (process.env.REDIS_URL) {
     var client = require('redis').createClient(process.env.REDIS_URL);
-    var dataStore = redisStorage.new(client);
+    dataStore = redisStorage.new(client, 30);
 } else {
     var nodePersist = require('node-persist');
     nodePersist.initSync();
-    var dataStore = nodePersistStorage.new(nodePersist);
+    dataStore = nodePersistStorage.new(nodePersist, 30);
 }
 var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
 

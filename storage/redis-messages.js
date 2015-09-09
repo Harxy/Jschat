@@ -1,15 +1,17 @@
-var CreateMessageStorage = function(redis){
-    var messagesToKeep = 30;
+var CreateMessageStorage = function(redis, messagesToKeep) {
+    var roomLife = 3 * 60 * 60 * 24; // 3 days
+    messagesToKeep = messagesToKeep || 30;
+    var loadMessages = function (roomId, callback) {
+        var dataStoreId = 'messages.' + roomId;
+        redis.get(dataStoreId, function(err, reply) {
+            callback(JSON.parse(reply) || []);
+        });
+        redis.expire(dataStoreId, roomLife);
+    };
     return {
         "storeMessage": function (roomId, message) {
-            var dataStoreId = 'messages.' + roomId;
-            redis.get(dataStoreId, function(err, reply) {
-                if (!reply) {
-                    var currentMessages = [];
-                } else {
-                    var currentMessages = JSON.parse(reply);
-                }
-
+            loadMessages(roomId, function(currentMessages) {
+                var dataStoreId = 'messages.' + roomId;
                 currentMessages.unshift(message);
                 redis.set(
                     dataStoreId,
@@ -17,12 +19,7 @@ var CreateMessageStorage = function(redis){
                 );
             });
         },
-        "loadMessages": function (roomId, callback) {
-            var dataStoreId = 'messages.' + roomId;
-            redis.get(dataStoreId, function(err, reply) {
-                callback(JSON.parse(reply));
-            });
-        }
+        "loadMessages": loadMessages
     };
 };
 
