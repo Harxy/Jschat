@@ -1,7 +1,6 @@
 var    statix = require('node-static'),
        http = require('http'),
        Faye = require('faye'),
-       request = require("request"),
        diceRollExtension = require("./extensions/dice-roll"),
        gifMeExtension = require("./extensions/gif-me"),
        nodePersistStorage = require('./storage/node-persist-messages'),
