@@ -119,7 +119,7 @@ function eraseCookie(name) {
 
 function setLastRoomName() {
   var lastRoom = readCookie("lastRoom");
-  if (lastRoom != 'undefined')
+  if (lastRoom != 'undefined' || null && lastRoom != null)
       $('#lastRoom').html("Back to <a href='/rooms/" + lastRoom + "'>#" + lastRoom + "</a>");
   else
       $('#lastRoom').html("Go <a href='/'>#home</a>");
