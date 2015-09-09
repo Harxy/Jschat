@@ -1,5 +1,5 @@
-var CreateMessageStorage = function(nodePersist){
-    var messagesToKeep = 30;
+var CreateMessageStorage = function(nodePersist, messagesToKeep){
+    messagesToKeep = messagesToKeep || 30;
     return {
         "storeMessage": function (roomId, message) {
             var dataStoreId = 'messages.' + roomId;

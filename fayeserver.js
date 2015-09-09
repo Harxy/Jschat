@@ -12,11 +12,11 @@ var    statix = require('node-static'),
 var dataStore;
 if (process.env.REDIS_URL) {
     var client = require('redis').createClient(process.env.REDIS_URL);
-    dataStore = redisStorage.new(client);
+    dataStore = redisStorage.new(client, 30);
 } else {
     var nodePersist = require('node-persist');
     nodePersist.initSync();
-    dataStore = nodePersistStorage.new(nodePersist);
+    dataStore = nodePersistStorage.new(nodePersist, 30);
 }
 var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
 

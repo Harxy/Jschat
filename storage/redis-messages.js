@@ -1,5 +1,5 @@
-var CreateMessageStorage = function(redis){
-    var messagesToKeep = 30;
+var CreateMessageStorage = function(redis, messagesToKeep){
+    messagesToKeep = messagesToKeep || 30;
     var loadMessages = function (roomId, callback) {
         var dataStoreId = 'messages.' + roomId;
         redis.get(dataStoreId, function(err, reply) {
