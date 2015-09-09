@@ -9,13 +9,14 @@ var    statix = require('node-static'),
        messageLogging = require('./extensions/message-logger.js'),
        autoHtmlExtension = require("./extensions/auto-html");
 
+var dataStore;
 if (process.env.REDIS_URL) {
     var client = require('redis').createClient(process.env.REDIS_URL);
-    var dataStore = redisStorage.new(client);
+    dataStore = redisStorage.new(client);
 } else {
     var nodePersist = require('node-persist');
     nodePersist.initSync();
-    var dataStore = nodePersistStorage.new(nodePersist);
+    dataStore = nodePersistStorage.new(nodePersist);
 }
 var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
 
