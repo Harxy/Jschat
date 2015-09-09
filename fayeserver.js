@@ -13,7 +13,7 @@ dataStore.initSync();
 
 var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
 
-var file = new(statix.Server)('.');
+var file = new(statix.Server)('./www');
 
 var server = http.createServer(function(request, response) {
     request.addListener('end', function() {
