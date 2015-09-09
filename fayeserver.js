@@ -4,12 +4,17 @@ var    statix = require('node-static'),
        request = require("request"),
        diceRollExtension = require("./extensions/dice-roll"),
        gifMeExtension = require("./extensions/gif-me"),
-       dataStore = require('node-persist'),
+       nodePersist = require('node-persist'),
+       nodePersistStorage = require('./storage/node-persist-messages'),
        scriptFilterExtension = require('./extensions/script-filter.js'),
        messageLogging = require('./extensions/message-logger.js'),
        autoHtmlExtension = require("./extensions/auto-html");
 
-dataStore.initSync();
+
+
+nodePersist.initSync();
+
+var dataStore = nodePersistStorage.new(nodePersist);
 
 var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
 
@@ -23,12 +28,10 @@ var server = http.createServer(function(request, response) {
             var room = request.url.slice(request.url.lastIndexOf('/') + 1);
             if (!room)
                 room = 'Welcome';
-
-            var dataStoreId = 'messages.' + room;
-            var messages = dataStore.getItem(dataStoreId);
-            response.writeHead(200, { 'Content-Type': 'application/json' });
-            response.end( JSON.stringify(messages) );
-
+            dataStore.loadMessages(room, function(messages) {
+                response.writeHead(200, { 'Content-Type': 'application/json' });
+                response.end( JSON.stringify(messages) );
+            });
         } else {
             file.serve(request, response);
         }
