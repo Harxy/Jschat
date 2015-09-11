@@ -96,7 +96,10 @@ function loadHistory(roomName) {
 }
 
 function addToScreen(name, message, timeString) {
-    $('#output').prepend('<div class="message"><div class="name">' + name + '<span>' + timeString + '</span></div><div class="body">' + message + '</div></div>');
+    var $newMessage = $('<div class="message"></div>')
+        .append('<div class="name">' + name + '<span>' + timeString + '</span></div>')
+        .append('<div class="body">' + message + '</div>');
+    $('#output').prepend($newMessage);
 }
 
 
