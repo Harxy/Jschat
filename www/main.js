@@ -83,10 +83,14 @@ function sendMessage(client, roomName, username, message) {
 }
 
 function loadHistory(roomName) {
-    $.getJSON("/history/" + roomName, function (data) {
-        data.reverse();
-        $.each(data, function (key, val) {
-            addToScreen(data[key].data.name, data[key].data.text, data[key].data.timeString);
+    $.getJSON("/history/" + roomName, function (messages) {
+        messages.reverse();
+        $.each(messages, function (key, message) {
+            addToScreen(
+                message.data.name,
+                message.data.text,
+                message.data.timeString
+            );
         });
     });
 }
