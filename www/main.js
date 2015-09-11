@@ -9,8 +9,10 @@
     subscribeToRoom(client, roomName);
     loadHistory();
 
-    setLastRoomName();
-    createCookie("lastRoom", roomName, 30);
+
+    setLastRoomName(roomName);
+    getRecentRoomNames();
+
 
     $('#theme-picker').change(function () {
         setTheme(this.value);
@@ -116,11 +118,23 @@ function readCookie(name) {
 function eraseCookie(name) {
     createCookie(name, "", -1);
 }
+function getRecentRoomNames() {
+  var roomArray = [readCookie("lastRoom"), readCookie("secondRoom"), readCookie("thirdRoom")];
+  for (var i = 0; i < roomArray.length; i++) {
+    if (roomArray[i] != 'undefined' && roomName !== null)
+        $('#lastRoom').append(" || <a href='/rooms/" + roomArray[i] + "'>#" + roomArray[i] + "</a>");
+    else
+        $('#lastRoom').append("");
+  }
 
-function setLastRoomName() {
-  var lastRoom = readCookie("lastRoom");
-  if (lastRoom != 'undefined' || null && lastRoom != null)
-      $('#lastRoom').html("Back to <a href='/rooms/" + lastRoom + "'>#" + lastRoom + "</a>");
-  else
-      $('#lastRoom').html("Go <a href='/'>#home</a>");
+}
+
+function setLastRoomName(roomName) {
+  if (roomName != 'undefined' && roomName !== null) {
+    if (roomName != readCookie('lastRoom') && roomName != readCookie('secondRoom')){
+      createCookie('thirdRoom', readCookie('secondRoom'), 30);
+      createCookie('secondRoom', readCookie('lastRoom'), 30);
+      createCookie('lastRoom', roomName, 30);
+    }
+  }
 }

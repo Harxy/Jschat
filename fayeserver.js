@@ -30,7 +30,7 @@ var server = http.createServer(function(request, response) {
             var room = request.url.slice(request.url.lastIndexOf('/') + 1);
             if (!room)
                 room = 'Welcome';
-            dataStore.loadMessages(room, function(messages) {
+            dataStore.loadMessages(room, function(messages) { 
                 response.writeHead(200, { 'Content-Type': 'application/json' });
                 response.end( JSON.stringify(messages) );
             });
