@@ -16,16 +16,24 @@ var roomifyLinks = function(text) {
   return text.replace(roomMeRegex, "$1<a href='/rooms/$2'>#$2</a>");
 };
 
+var apply = function(initialText, funcs) {
+    return funcs.reduce(function(text, funcToApply) {
+        return funcToApply(text);
+    }, initialText);
+};
+
 var AutoHtmlExtension = {
     incoming: function (message, callback) {
         if (!message.data || !message.data.text) {
             callback(message);
             return;
         }
-        message.data.text = linkifyUrls(message.data.text);
-        message.data.text = imagifyLinks(message.data.text);
-        message.data.text = roomception(message.data.text);
-        message.data.text = roomifyLinks(message.data.text);
+        message.data.text = apply(message.data.text,[
+            linkifyUrls,
+            imagifyLinks,
+            roomception,
+            roomifyLinks
+        ]);
         callback(message);
     }
 };
