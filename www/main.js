@@ -11,7 +11,7 @@
 
 
     setLastRoomName(roomName);
-    getRecentRoomNames(roomName);
+    getRecentRoomNames();
 
 
     $('#theme-picker').change(function () {
@@ -128,11 +128,11 @@ function eraseCookie(name) {
     createCookie(name, "", -1);
 }
 
-function getRecentRoomNames(currentRoomName) {
+function getRecentRoomNames() {
     var $lastRooms = $('#lastRoom');
     var roomArray = [readCookie("lastRoom"), readCookie("secondRoom"), readCookie("thirdRoom")];
     for (var i = 0; i < roomArray.length; i++) {
-        if (roomArray[i] != 'undefined' && currentRoomName !== null)
+        if (roomArray[i] != 'undefined')
             $lastRooms.append(" || <a href='/rooms/" + roomArray[i] + "'>#" + roomArray[i] + "</a>");
         else
             $lastRooms.append("");
