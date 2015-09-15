@@ -6,7 +6,7 @@ var createInlineGif = function (selected) {
 var createRudeGifLink = function (selected) {
     return '<a href="' + selected.images.original.url + '">Rude gif</a>';
 };
-var workSafeRatings = ["g", "y"];
+var workSafeRatings = ["pg-13", "pg", "g", "y"];
 var isGifWorkSafe = function (selected) {
     return !selected.rating || workSafeRatings.indexOf(selected.rating);
 };
