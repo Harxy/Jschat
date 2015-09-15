@@ -26,7 +26,7 @@ var GifMeExtension = {
             dontSend = true;
             var param = message.data.text.slice(gifMeKeyword.length).trim();
 
-            var url = 'http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=25&q=' + param;
+            var url = 'http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=10&q=' + param;
             request({
                 url: url,
                 json: true
