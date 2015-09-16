@@ -7,7 +7,8 @@ var    statix = require('node-static'),
        redisStorage = require('./storage/redis-messages'),
        scriptFilterExtension = require('./extensions/script-filter.js'),
        messageLogging = require('./extensions/message-logger.js'),
-       autoHtmlExtension = require("./extensions/auto-html");
+       autoHtmlExtension = require("./extensions/auto-html"),
+       emojiExtension = require("./extensions/emojis");
 
 var dataStore;
 if (process.env.REDIS_URL) {
@@ -45,6 +46,7 @@ bayeux.addExtension(scriptFilterExtension);
 bayeux.addExtension(autoHtmlExtension);
 bayeux.addExtension(gifMeExtension);
 bayeux.addExtension(diceRollExtension("dice me"));
+bayeux.addExtension(emojiExtension);
 bayeux.addExtension(messageLogging(dataStore));
 
 
