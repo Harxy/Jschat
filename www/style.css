@@ -75,6 +75,10 @@
         width: calc(100% - 100px);
     }
 
+.message img.emoji {
+    vertical-align: middle;
+}
+
 .bubble-theme .message .name {
     width: 82px;
     padding-top: 6px;
