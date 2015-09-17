@@ -1,13 +1,13 @@
 ﻿$(function () {
     var roomArray = window.location.pathname.split('/');
-    roomName = roomArray[2];
+    var roomName = roomArray[2];
     var client = new Faye.Client('/faye');
 
     getLastUsername();
     getLastTheme();
 
     subscribeToRoom(client, roomName);
-    loadHistory();
+    loadHistory(roomName);
 
 
     setLastRoomName(roomName);
@@ -17,30 +17,32 @@
     $('#theme-picker').change(function () {
         setTheme(this.value);
     });
-    $('#input').keyup(function (e) {
-        var message = $('#input').val();
-        var userName = $('#name').val();
+
+    var $input = $('#input');
+    var $name = $('#name');
+    $input.keyup(function (e) {
+        var message = $input.val();
+        var userName = $name.val();
         if (e.keyCode === 13 && message != null && message != '') {
             sendMessage(client, roomName, userName, message);
-            $('#input').val('');
+            $input.val('');
         }
     });
-
-
-    $('#input').focus();
+    $input.focus();
 });
 
 function getLastUsername() {
     var userName = readCookie("username");
+    var $name = $('#name');
     if (userName)
-        $('#name').val(userName);
+        $name.val(userName);
     else
-        $('#name').val("Anon");
+        $name.val("Anon");
 }
 
 function setTheme(theme) {
-    $('body').removeClass();
-    $('body').addClass(theme);
+    $('body').removeClass()
+        .addClass(theme);
 
     createCookie("theme", theme, 30);
 }
@@ -80,27 +82,34 @@ function sendMessage(client, roomName, username, message) {
 
 }
 
-function loadHistory() {
-    $.getJSON("/history/" + roomName, function (data) {
-        data.reverse();
-        $.each(data, function (key, val) {
-            addToScreen(data[key].data.name, data[key].data.text, data[key].data.timeString);
+function loadHistory(roomName) {
+    $.getJSON("/history/" + roomName, function (messages) {
+        messages.reverse();
+        $.each(messages, function (key, message) {
+            addToScreen(
+                message.data.name,
+                message.data.text,
+                message.data.timeString
+            );
         });
     });
 }
 
 function addToScreen(name, message, timeString) {
-    $('#output').prepend('<div class="message"><div class="name">' + name + '<span>' + timeString + '</span></div><div class="body">' + message + '</div></div>');
+    var $newMessage = $('<div class="message"></div>')
+        .append('<div class="name">' + name + '<span>' + timeString + '</span></div>')
+        .append('<div class="body">' + message + '</div>');
+    $('#output').prepend($newMessage);
 }
 
 
 function createCookie(name, value, days) {
+    var expires = "";
     if (days) {
         var date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        var expires = "; expires=" + date.toGMTString();
+        expires = "; expires=" + date.toGMTString();
     }
-    else var expires = "";
     document.cookie = name + "=" + value + expires + "; path=/";
 }
 
@@ -118,23 +127,25 @@ function readCookie(name) {
 function eraseCookie(name) {
     createCookie(name, "", -1);
 }
+
 function getRecentRoomNames() {
-  var roomArray = [readCookie("lastRoom"), readCookie("secondRoom"), readCookie("thirdRoom")];
-  for (var i = 0; i < roomArray.length; i++) {
-    if (roomArray[i] != 'undefined' && roomName !== null)
-        $('#lastRoom').append(" || <a href='/rooms/" + roomArray[i] + "'>#" + roomArray[i] + "</a>");
-    else
-        $('#lastRoom').append("");
-  }
+    var $lastRooms = $('#lastRoom');
+    var roomArray = [readCookie("lastRoom"), readCookie("secondRoom"), readCookie("thirdRoom")];
+    for (var i = 0; i < roomArray.length; i++) {
+        if (roomArray[i] != 'undefined')
+            $lastRooms.append(" || <a href='/rooms/" + roomArray[i] + "'>#" + roomArray[i] + "</a>");
+        else
+            $lastRooms.append("");
+    }
 
 }
 
 function setLastRoomName(roomName) {
-  if (roomName != 'undefined' && roomName !== null) {
-    if (roomName != readCookie('lastRoom') && roomName != readCookie('secondRoom')){
-      createCookie('thirdRoom', readCookie('secondRoom'), 30);
-      createCookie('secondRoom', readCookie('lastRoom'), 30);
-      createCookie('lastRoom', roomName, 30);
+    if (roomName != 'undefined' && roomName !== null) {
+        if (roomName != readCookie('lastRoom') && roomName != readCookie('secondRoom')){
+            createCookie('thirdRoom', readCookie('secondRoom'), 30);
+            createCookie('secondRoom', readCookie('lastRoom'), 30);
+            createCookie('lastRoom', roomName, 30);
+        }
     }
-  }
 }
