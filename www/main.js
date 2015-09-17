@@ -99,7 +99,7 @@ function addToScreen(name, message, timeString) {
     if (twemoji.parse) {
         message = twemoji.parse(message, {size: 16});
     }
-    $('#output').prepend('<div class="message"><div class="name">' + name + '<span>' + timeString + '</span></div><div class="body">' + message + '</div></div>');
+
     var $newMessage = $('<div class="message"></div>')
         .append('<div class="name">' + name + '<span>' + timeString + '</span></div>')
         .append('<div class="body">' + message + '</div>');
