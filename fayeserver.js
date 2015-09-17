@@ -3,39 +3,23 @@ var    statix = require('node-static'),
        Faye = require('faye'),
        diceRollExtension = require("./extensions/dice-roll"),
        gifMeExtension = require("./extensions/gif-me"),
-       nodePersistStorage = require('./storage/node-persist-messages'),
-       redisStorage = require('./storage/redis-messages'),
        scriptFilterExtension = require('./extensions/script-filter.js'),
        messageLogging = require('./extensions/message-logger.js'),
        autoHtmlExtension = require("./extensions/auto-html");
 
-var dataStore;
-if (process.env.REDIS_URL) {
-    var client = require('redis').createClient(process.env.REDIS_URL);
-    dataStore = redisStorage.new(client, 30);
-} else {
-    var nodePersist = require('node-persist');
-    nodePersist.initSync();
-    dataStore = nodePersistStorage.new(nodePersist, 30);
-}
+var dataStore = require("./storage/loader").load(process.env);
 var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
-
-var file = new(statix.Server)('./www');
+var messageHistoryServer = require("./server/message-history").new(dataStore);
+var fileServer = new(statix.Server)('./www');
 
 var server = http.createServer(function(request, response) {
     request.addListener('end', function() {
         if (request.url.indexOf('/rooms/') === 0) {
-            file.serveFile('/index.html', 200, {}, request, response);
+            fileServer.serveFile('/index.html', 200, {}, request, response);
         } else if (request.url.indexOf('/history/') === 0) {
-            var room = request.url.slice(request.url.lastIndexOf('/') + 1);
-            if (!room)
-                room = 'Welcome';
-            dataStore.loadMessages(room, function(messages) { 
-                response.writeHead(200, { 'Content-Type': 'application/json' });
-                response.end( JSON.stringify(messages) );
-            });
+            messageHistoryServer.serve(request, response);
         } else {
-            file.serve(request, response);
+            fileServer.serve(request, response);
         }
     }).resume();
 });
