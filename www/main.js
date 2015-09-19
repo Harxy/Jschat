@@ -136,7 +136,7 @@ function getRecentRoomNames() {
     var $lastRooms = $('#lastRoom');
     var roomArray = [readCookie("lastRoom"), readCookie("secondRoom"), readCookie("thirdRoom")];
     for (var i = 0; i < roomArray.length; i++) {
-        if (roomArray[i] != 'undefined')
+        if (roomArray[i] != 'undefined' && roomArray[i] != null)
             $lastRooms.append(" || <a href='/rooms/" + roomArray[i] + "'>#" + roomArray[i] + "</a>");
         else
             $lastRooms.append("");
