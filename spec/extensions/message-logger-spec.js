@@ -1,22 +1,8 @@
 var messageLogging = require("../../lib/extensions/message-logger");
+var messageHelper = require("../helpers/message-helper.js");
 
-var messageWithText = function(text) {
-    return {
-        channel: "/rooms/logging-test",
-        data: {
-            text: text
-        }
-    };
-};
-
-var getMessageText = function(message) {
-    return message.data.text;
-};
-
-var expectMessageToMatch = function (updatedMessage, expectedMessage) {
-    expect(getMessageText(updatedMessage))
-        .toBe(getMessageText(expectedMessage));
-};
+var expectMessageToMatch = messageHelper.expectMessageToMatch;
+var messageWithText = messageHelper.messageWithText;
 
 describe("The message logger wraps data storage and provides and extension", function() {
     var handler, dataStore;

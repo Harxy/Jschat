@@ -1,21 +1,8 @@
 autoHtmlExtension = require("../../lib/extensions/auto-html");
+var messageHelper = require("../helpers/message-helper.js");
 
-var messageWithText = function(text) {
-    return {
-        data: {
-            text: text
-        }
-    };
-};
-
-var getMessageText = function(message) {
-    return message.data.text;
-};
-
-var expectMessageToMatch = function (updatedMessage, expectedMessage) {
-    expect(getMessageText(updatedMessage))
-        .toBe(getMessageText(expectedMessage));
-};
+var expectMessageToMatch = messageHelper.expectMessageToMatch;
+var messageWithText = messageHelper.messageWithText;
 
 describe("The auto html provides an incoming handler", function() {
     var handler = autoHtmlExtension.incoming;
