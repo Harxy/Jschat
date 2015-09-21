@@ -6,12 +6,15 @@ var    statix = require('node-static'),
        scriptFilterExtension = require('./extensions/script-filter.js'),
        messageLogging = require('./extensions/message-logger.js'),
        autoHtmlExtension = require("./extensions/auto-html"),
-       emojiExtension = require("./extensions/emojis");
+       emojiExtension = require("./extensions/emojis"),
+       roomWatcher = require("./bots/room-watcher");
 
 var dataStore = require("./storage/loader").load(process.env);
 var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
 var messageHistoryServer = require("./server/message-history").new(dataStore);
 var fileServer = new(statix.Server)('./www');
+
+var serverClient = bayeux.getClient();
 
 var server = http.createServer(function(request, response) {
     request.addListener('end', function() {
@@ -33,6 +36,7 @@ bayeux.addExtension(diceRollExtension("dice me"));
 bayeux.addExtension(emojiExtension);
 bayeux.addExtension(messageLogging(dataStore));
 
+bayeux.on('subscribe', roomWatcher.new(serverClient));
 
 var port = process.env.PORT || 8001;
 server.listen(port);
