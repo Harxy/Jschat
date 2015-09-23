@@ -1,12 +1,13 @@
 var Browser = require('zombie');
 Browser.localhost('localhost', 8001);
+var App = require('../../lib/app');
 
 describe('Basic page load checks', function() {
     var browser, app;
 
     beforeEach(function() {
         browser = new Browser();
-        app = require('../../lib/app').listen(8001);
+        app = App.listen(8001);
     });
 
     afterEach(function() {
@@ -20,7 +21,7 @@ describe('Basic page load checks', function() {
         });
     });
 
-    it('specic room loading works', function(done) {
+    it('specific room loading works', function(done) {
         browser.visit('/rooms/dev', function() {
             browser.assert.success();
             done();
