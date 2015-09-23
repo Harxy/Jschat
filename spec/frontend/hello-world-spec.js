@@ -13,17 +13,17 @@ describe('Basic page load checks', function() {
         app.close();
     });
 
-    it('index loads', function() {
+    it('index loads', function(done) {
         browser.visit('/', function() {
             browser.assert.success();
-            next();
+            done();
         });
     });
 
-    it('specic room loading works', function() {
+    it('specic room loading works', function(done) {
         browser.visit('/rooms/dev', function() {
             browser.assert.success();
-            next();
+            done();
         });
     });
 
