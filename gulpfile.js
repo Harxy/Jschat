@@ -19,4 +19,5 @@ gulp.task('jasmine-frontend', function () {
         .pipe(jasmine());
 });
 
-gulp.task('default', ['lint', 'jasmine-backend', 'jasmine-frontend']);
+gulp.task('default', ['lint', 'jasmine-backend']);
+gulp.task('everything', ['lint', 'jasmine-backend', 'jasmine-frontend']);
