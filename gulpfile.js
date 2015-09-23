@@ -9,9 +9,8 @@ gulp.task('lint', function() {
 });
 
 gulp.task('jasmine', function () {
-    return gulp.src('./spec/**/*[sS]pec.js')
+    return gulp.src('./spec/**/*-spec.js')
         .pipe(jasmine());
 });
-
 
 gulp.task('default', ['lint', 'jasmine']);
