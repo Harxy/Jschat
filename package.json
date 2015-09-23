@@ -12,11 +12,13 @@
     "redis": "^1.0.0"
   },
   "devDependencies": {
-    "jasmine": "~2.3.2",
-    "gulp-jasmine": "~2.1.0",
     "gulp": "~3.9.0",
+    "gulp-jasmine": "~2.1.0",
+    "gulp-jasmine-phantom": "^2.0.1",
+    "gulp-jshint": "~1.11.2",
+    "jasmine": "~2.3.2",
     "jshint": "~2.8.0",
-    "gulp-jshint": "~1.11.2"
+    "phantomjs": "^1.9.18"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
