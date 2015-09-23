@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var jasmine = require('gulp-jasmine-phantom');
+// HACKISH (phantom glup task needed to allow multiple jasmine tasks)
 
 gulp.task('lint', function() {
     return gulp.src('./lib/**/*.js')
@@ -15,7 +16,7 @@ gulp.task('jasmine-backend', function () {
 
 gulp.task('jasmine-frontend', function () {
     return gulp.src('./spec/frontend/**/*-spec.js')
-        .pipe(jasmine({integration: true}));
+        .pipe(jasmine());
 });
 
 gulp.task('default', ['lint', 'jasmine-backend', 'jasmine-frontend']);
