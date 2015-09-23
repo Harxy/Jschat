@@ -1,16 +1,16 @@
 var    statix = require('node-static'),
        http = require('http'),
        Faye = require('faye'),
-       diceRollExtension = require("./extensions/dice-roll"),
-       gifMeExtension = require("./extensions/gif-me"),
-       scriptFilterExtension = require('./extensions/script-filter.js'),
-       messageLogging = require('./extensions/message-logger.js'),
-       autoHtmlExtension = require("./extensions/auto-html"),
-       emojiExtension = require("./extensions/emojis");
+       diceRollExtension = require("./lib/extensions/dice-roll"),
+       gifMeExtension = require("./lib/extensions/gif-me"),
+       scriptFilterExtension = require('./lib/extensions/script-filter.js'),
+       messageLogging = require('./lib/extensions/message-logger.js'),
+       autoHtmlExtension = require("./lib/extensions/auto-html"),
+       emojiExtension = require("./lib/extensions/emojis");
 
-var dataStore = require("./storage/loader").load(process.env);
+var dataStore = require("./lib/storage/loader").load(process.env);
 var bayeux = new Faye.NodeAdapter({mount: '/faye', timeout: 5 });
-var messageHistoryServer = require("./server/message-history").new(dataStore);
+var messageHistoryServer = require("./lib/server/message-history").new(dataStore);
 var fileServer = new(statix.Server)('./www');
 
 var server = http.createServer(function(request, response) {
