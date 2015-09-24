@@ -8,10 +8,18 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('jasmine', function () {
-    return gulp.src('./spec/**/*[sS]pec.js')
+gulp.task('jasmine-backend', function () {
+    return gulp.src('./spec/backend/**/*-spec.js')
         .pipe(jasmine());
 });
 
+// Marking the front end tests as dependant on the backend tests
+// prevents an issue that jasmine has with running two lots in
+//  parallel
+gulp.task('jasmine-frontend', ['jasmine-backend'], function () {
+    return gulp.src('./spec/frontend/**/*-spec.js')
+        .pipe(jasmine());
+});
 
-gulp.task('default', ['lint', 'jasmine']);
+gulp.task('default', ['lint', 'jasmine-backend']);
+gulp.task('everything', ['lint', 'jasmine-backend', 'jasmine-frontend']);

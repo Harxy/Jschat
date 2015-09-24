@@ -1,5 +1,5 @@
-autoHtmlExtension = require("../../lib/extensions/auto-html");
-var messageHelper = require("../helpers/message-helper.js");
+autoHtmlExtension = require("../../../lib/extensions/auto-html");
+var messageHelper = require("../../helpers/message-helper.js");
 
 var expectMessageToMatch = messageHelper.expectMessageToMatch;
 var messageWithText = messageHelper.messageWithText;

@@ -1,5 +1,5 @@
-var messageLogging = require("../../lib/extensions/message-logger");
-var messageHelper = require("../helpers/message-helper.js");
+var messageLogging = require("../../../lib/extensions/message-logger");
+var messageHelper = require("../../helpers/message-helper.js");
 
 var expectMessageToMatch = messageHelper.expectMessageToMatch;
 var messageWithText = messageHelper.messageWithText;
