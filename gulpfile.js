@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
-var jasmine = require('gulp-jasmine-phantom');
-// HACKISH (phantom glup task needed to allow multiple jasmine tasks)
+var jasmine = require('gulp-jasmine');
 
 gulp.task('lint', function() {
     return gulp.src('./lib/**/*.js')
@@ -14,7 +13,10 @@ gulp.task('jasmine-backend', function () {
         .pipe(jasmine());
 });
 
-gulp.task('jasmine-frontend', function () {
+// Marking the front end tests as dependant on the backend tests
+// prevents an issue that jasmine has with running two lots in
+//  parallel
+gulp.task('jasmine-frontend', ['jasmine-backend'], function () {
     return gulp.src('./spec/frontend/**/*-spec.js')
         .pipe(jasmine());
 });
