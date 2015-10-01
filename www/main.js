@@ -42,8 +42,6 @@ $(function () {
 
 
 function sendHeartbeat(client, room) {
-    console.log("Heartbeat:" + userName);
-
     client.publish('/heartbeat_push/', {
         username: userName,
         room: room
