@@ -43,13 +43,14 @@ describe("The auto html provides an incoming handler", function() {
         });
     });
 
-    it("makes links starting with a # into doors to other rooms", function() {
-        var message = messageWithText("#hypnotoad");
+    it("creates portals when room link is only content on line", function() {
+        var message = messageWithText("#hello");
         var expectedMessage = messageWithText(
-            "<a href='/rooms/hypnotoad'>#hypnotoad</a>"
+            ":: portal opened to <a href='/rooms/hello'>#hello</a> (<a href='/rooms/hello' target='_blank'>in a new window</a>) ::"
         );
         handler(message, function(updatedMessage) {
             expectMessageToMatch(updatedMessage, expectedMessage);
         });
     });
+
 });
