@@ -37,7 +37,10 @@ $(function () {
         setUsername($name.val());
     });
 
+
     sendHeartbeat(client, roomName);
+
+
 });
 
 
