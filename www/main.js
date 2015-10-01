@@ -1,18 +1,22 @@
-﻿$(function () {
+﻿var userName;
+
+$(function () {
     var roomArray = window.location.pathname.split('/');
     var roomName = roomArray[2];
+    if (!roomName)
+        roomName = "welcome";
+    
     var client = new Faye.Client('/faye');
 
     getLastUsername();
     getLastTheme();
 
     subscribeToRoom(client, roomName);
+    subscribeToRoomHeartbeats(client, roomName);
     loadHistory(roomName);
-
 
     setLastRoomName(roomName);
     getRecentRoomNames();
-
 
     $('#theme-picker').change(function () {
         setTheme(this.value);
@@ -22,22 +26,48 @@
     var $name = $('#name');
     $input.keyup(function (e) {
         var message = $input.val();
-        var userName = $name.val();
+        userName = $name.val();
         if (e.keyCode === 13 && message != null && message != '') {
-            sendMessage(client, roomName, userName, message);
+            sendMessage(client, roomName, message);
             $input.val('');
         }
     });
     $input.focus();
+    $name.on('blur', function() {
+        setUsername($name.val());
+    });
+
+    sendHeartbeat(client, roomName);
 });
 
+
+function sendHeartbeat(client, room) {
+    console.log("Heartbeat:" + userName);
+
+    client.publish('/heartbeat_push/', {
+        username: userName,
+        room: room
+    });
+
+    setTimeout(function () {
+        sendHeartbeat(client, room);
+    }, 10 * 1000);
+}
+
 function getLastUsername() {
-    var userName = readCookie("username");
+    var storedUsername = readCookie("username");
+    if (!storedUsername)
+        storedUsername = "Anon";
+
+    setUsername(storedUsername);
+}
+
+function setUsername(username) {
+    userName = username;
+    createCookie("username", userName, 30);
+    
     var $name = $('#name');
-    if (userName)
-        $name.val(userName);
-    else
-        $name.val("Anon");
+    $name.val(userName);
 }
 
 function setTheme(theme) {
@@ -68,18 +98,24 @@ function subscribeToRoom(client, roomName) {
 
 }
 
-function sendMessage(client, roomName, username, message) {
+function subscribeToRoomHeartbeats(client, roomName) {
+    client.subscribe('/heartbeat_listen/' + roomName, function (message) {
+        updateUserList(message);
+    });
+
+}
+
+function sendMessage(client, roomName, message) {
     var time = new Date();
     var timeString = time.toTimeString().split(' ')[0];
 
     client.publish('/rooms/' + roomName, {
         text: message,
-        name: username,
+        name: userName,
         timeString: timeString
     });
 
-    createCookie("username", username, 30);
-
+    
 }
 
 function loadHistory(roomName) {
@@ -104,6 +140,14 @@ function addToScreen(name, message, timeString) {
         .append('<div class="name">' + name + '<span>' + timeString + '</span></div>')
         .append('<div class="body">' + message + '</div>');
     $('#output').prepend($newMessage);
+}
+
+function updateUserList(users) {
+    var userList = $('.user-list');
+    userList.empty();
+    $.each(users, function(key, user) {
+        userList.append('<li>' + user.name + '</li>');
+    });
 }
 
 
