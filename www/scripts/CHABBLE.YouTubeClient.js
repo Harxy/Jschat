@@ -1,15 +1,16 @@
 ﻿var CHABBLE = CHABBLE || {};
 
 CHABBLE.YouTubeClient = (function () {
- var youTubePlayer;
+    var youTubePlayer;
     var playState;
-
+    var readyCallback;
+    
     function playYouTubeVideo(videoId, startTime) {
         youTubePlayer.cueVideoById({
             videoId: videoId,
             startSeconds: startTime
         });
-
+        
         youTubePlayer.playVideo();
     }
     
@@ -41,28 +42,35 @@ CHABBLE.YouTubeClient = (function () {
         };
 
     }
-
+    
     function onPlayerReady(event) {
-        playYouTubeVideo("kfVsfOSbJY0", 30);
+        readyCallback();
     }
-
+    
     function onStateChange(event) {
         playState = event.data;
+        console.log(playState);
+        if (playState === 1) {
+            
+        }
     }
-
+    
     function stopVideo() {
         youTubePlayer.stopVideo();
     }
-
+    
     return {
-        init: function() {
+        init: function () {
             initPlayer();
         },
-    play: function(videoId, startTime) {
+        play: function (videoId, startTime) {
             playYouTubeVideo(videoId, startTime);
         },
-    stop: function() {
-        stopVideo();
-    }
+        stop: function () {
+            stopVideo();
+        },
+        playerReady: function (callback) {
+            readyCallback = callback;
+        }
     };
 })();

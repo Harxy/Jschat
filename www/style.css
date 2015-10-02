@@ -1,4 +1,14 @@
+h1, .h1 { color: #3F2860; }
+
+h4, .h4 { color: #ef6d38; }
+
 .message { margin: 5px; }
+
+.message .body {
+    display: inline-block;
+    margin-left: 5px;
+    position: relative;
+}
 
 .message .body img {
     max-height: 450px;
@@ -21,27 +31,18 @@
 
 .message .name span:after { content: "):"; }
 
-.message .body {
-    display: inline-block;
-    margin-left: 5px;
-    position: relative;
-    width: -moz-calc(100% - 100px);
-    width: -webkit-calc(100% - 100px);
-    width: calc(100% - 100px);
-}
-
 .message img.emoji { vertical-align: middle; }
 
-h1, .h1 { color: #3F2860; }
-h4, .h4 { color: #ef6d38; }
+.user-list {
+    display: none;
+    margin-bottom: 15px;
+}
 
-.user-list { display: none;margin-bottom: 15px;}
-
-.user-list .online-users div, .user-list .recent-rooms div  {
+.user-list .online-users div, .user-list .recent-rooms div {
+    color: #ef6d38;
     display: inline;
     font-weight: bold;
     padding-right: 5px;
-    color: #ef6d38;  
 }
 
 .user-list ul { display: inline; }
@@ -59,12 +60,10 @@ h4, .h4 { color: #ef6d38; }
 }
 
 .now-playing {
-    padding: 10px;
     font-weight: bold;
+    padding: 10px;
 }
 
-@media(max-width:767px) {
-    .recent-rooms {
-        text-align: left;
-    }
+@media (max-width: 767px) {
+    .recent-rooms { text-align: left; }
 }
