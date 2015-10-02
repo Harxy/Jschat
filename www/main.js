@@ -7,7 +7,7 @@ $(function () {
         roomName = "welcome";
     
     var client = new Faye.Client('/faye');
-
+    $('title').html('#' + roomName)
     getLastUsername();
     getLastTheme();
 
