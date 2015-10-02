@@ -101,11 +101,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/jquery/jquery.titlealert.js"></script>
     <script src="/faye.js"></script>
-    <script type="text/javascript" src="/main.js"></script>
-    <script type="text/javascript" src="/CHABBLE.YouTubeClient.js"></script>
+    <script type="text/javascript" src="/scripts/main.js"></script>
+    <script type="text/javascript" src="/scripts/CHABBLE.YouTubeClient.js"></script>
 <script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
 <script>
     $(function () {
+        CHABBLE.YouTubeClient.playerReady(function() {
+            CHABBLE.YouTubeClient.play("kfVsfOSbJY0", 120);
+        });
         CHABBLE.YouTubeClient.init();
     });
 </script>

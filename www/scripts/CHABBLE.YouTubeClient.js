@@ -3,6 +3,7 @@
 CHABBLE.YouTubeClient = (function () {
  var youTubePlayer;
     var playState;
+    var readyCallback;
 
     function playYouTubeVideo(videoId, startTime) {
         youTubePlayer.cueVideoById({
@@ -43,7 +44,7 @@ CHABBLE.YouTubeClient = (function () {
     }
 
     function onPlayerReady(event) {
-        playYouTubeVideo("kfVsfOSbJY0", 30);
+        readyCallback();
     }
 
     function onStateChange(event) {
@@ -55,14 +56,17 @@ CHABBLE.YouTubeClient = (function () {
     }
 
     return {
-        init: function() {
+        init: function () {
             initPlayer();
         },
-    play: function(videoId, startTime) {
+        play: function(videoId, startTime) {
             playYouTubeVideo(videoId, startTime);
         },
-    stop: function() {
-        stopVideo();
-    }
-    };
+        stop: function() {
+            stopVideo();
+        },
+        playerReady: function(callback) {
+            readyCallback = callback;
+        }
+};
 })();
