@@ -4,8 +4,16 @@ CHABBLE.YouTubeClient = (function () {
     var youTubePlayer;
     var playState;
     var readyCallback;
-    
+    var finishedCallback;
+    var readyToPlay;
+
     function playYouTubeVideo(videoId, startTime) {
+        var currentTime = youTubePlayer.getCurrentTime();
+        var outBy = Math.abs(currentTime - startTime);
+
+        if ( (playState === 1 && outBy < 10) || playState === 3)
+            return;
+
         youTubePlayer.cueVideoById({
             videoId: videoId,
             startSeconds: startTime
@@ -31,6 +39,7 @@ CHABBLE.YouTubeClient = (function () {
     }
     
     function initPlayer() {
+        readyToPlay = false;
         var tag = document.createElement("script");
         
         tag.src = "https://www.youtube.com/iframe_api";
@@ -45,13 +54,16 @@ CHABBLE.YouTubeClient = (function () {
     
     function onPlayerReady(event) {
         readyCallback();
+        readyToPlay = true;
     }
     
     function onStateChange(event) {
         playState = event.data;
-        console.log(playState);
-        if (playState === 1) {
-            
+
+        if (playState === 0) {
+            if (typeof finishedCallback !== 'undefined') {
+                finishedCallback();
+            }
         }
     }
     
@@ -60,17 +72,21 @@ CHABBLE.YouTubeClient = (function () {
     }
     
     return {
-        init: function () {
+        Init: function () {
             initPlayer();
         },
-        play: function (videoId, startTime) {
+        Play: function (videoId, startTime) {
             playYouTubeVideo(videoId, startTime);
         },
-        stop: function () {
+        Stop: function () {
             stopVideo();
         },
-        playerReady: function (callback) {
+        PlayerReady: readyToPlay,
+        OnPlayerReady: function(callback) {
             readyCallback = callback;
+        },
+        OnVideoFinished: function(callback) {
+            finishedCallback = callback;
         }
     };
 })();
