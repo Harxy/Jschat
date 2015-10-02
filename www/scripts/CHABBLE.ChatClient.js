@@ -96,6 +96,15 @@ CHABBLE.ChatClient = (function() {
         },
         OnMediaRequestRecieved: function(callback) {
             mediaRequestReceivedCallback = callback;
+        },
+        SimulateMediaRequest: function() {
+            fayeClient.publish("/media/" + roomName, {
+                service: 'youtube',
+                id: 'kfVsfOSbJY0',
+                offset: 200,
+                user: 'Demo User',
+                title: 'Friday - Rebecca Black'
+            });
         }
     };
 })();

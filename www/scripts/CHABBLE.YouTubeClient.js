@@ -53,7 +53,8 @@ CHABBLE.YouTubeClient = (function () {
     }
     
     function onPlayerReady(event) {
-        readyCallback();
+        if (typeof readyCallback !== 'undefined') 
+            readyCallback();
         readyToPlay = true;
     }
     

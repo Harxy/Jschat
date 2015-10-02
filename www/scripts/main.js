@@ -8,12 +8,13 @@ var nowPlayingTitleField = $("#now-playing-title");
 var youtubeContainer = $('.youtube-container');
 
 $(function() {
-    $('title').html('#' + roomName)
+    
     var client = new Faye.Client("/faye");
     var roomName = getRoomNameFromUrl();
     var userName = getLastUsername();
     userNameField.val(userName);
     roomNameField.text(roomName);
+    $('title').html('#' + roomName);
 
     loadHistory(roomName);
     setLastRoomName(roomName);
@@ -44,6 +45,11 @@ $(function() {
     });
 
     CHABBLE.YouTubeClient.Init();
+
+    $('#simulate-media-request').click(function() {
+        CHABBLE.ChatClient.SimulateMediaRequest();
+        return false;
+    });
 });
 
 function playYoutubeVideo(videoId, offset, user, title) {
