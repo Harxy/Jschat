@@ -11,16 +11,24 @@ CHABBLE.ChatClient = (function() {
 
     var newMessageReceivedCallback;
     var heartbeatReceivedCallback;
-
+    var mediaRequestReceivedCallback;
 
     function setUsername(username) {
         userName = username;
     }
 
 
-    function subscribeToRoom() {
+    function subscribeToRoomMessages() {
         fayeClient.subscribe("/rooms/" + roomName, function(message) {
-            newMessageReceivedCallback(message.name, message.text, message.timeString);
+            if (typeof newMessageReceivedCallback !== "undefined")
+                newMessageReceivedCallback(message.name, message.text, message.timeString);
+        });
+    }
+
+    function subscribeToRoomMediaRequests() {
+        fayeClient.subscribe("/media/" + roomName, function(message) {
+            if (typeof mediaRequestReceivedCallback !== "undefined")
+                mediaRequestReceivedCallback(message.service, message.id, message.offset, message.user, message.title);
         });
     }
 
@@ -45,7 +53,8 @@ CHABBLE.ChatClient = (function() {
 
             roomUserList = userList;
 
-            heartbeatReceivedCallback(roomUserList);
+            if (typeof heartbeatReceivedCallback !== "undefined")
+                heartbeatReceivedCallback(roomUserList);
         });
     }
 
@@ -68,20 +77,34 @@ CHABBLE.ChatClient = (function() {
             userName = lUserName;
 
             sendHeartbeat();
+            subscribeToRoomMessages();
+            subscribeToRoomHeartbeats();
+            subscribeToRoomMediaRequests();
+
         },
         SetUsername: function(username) {
             setUsername(username);
         },
-        NewMessageReceived: function(callback) {
+        OnNewMessageReceived: function(callback) {
             newMessageReceivedCallback = callback;
-            subscribeToRoom();
         },
-        HearbeatReceived: function(callback) {
+        OnHearbeatReceived: function(callback) {
             heartbeatReceivedCallback = callback;
-            subscribeToRoomHeartbeats();
         },
         SendMessage: function(message) {
             sendMessage(message);
+        },
+        OnMediaRequestRecieved: function(callback) {
+            mediaRequestReceivedCallback = callback;
+        },
+        SimulateMediaRequest: function() {
+            fayeClient.publish("/media/" + roomName, {
+                service: 'youtube',
+                id: 'kfVsfOSbJY0',
+                offset: 200,
+                user: userName,
+                title: 'Friday - Rebecca Black'
+            });
         }
     };
 })();

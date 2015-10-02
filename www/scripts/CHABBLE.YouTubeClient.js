@@ -1,19 +1,36 @@
 ﻿var CHABBLE = CHABBLE || {};
 
-CHABBLE.YouTubeClient = (function () {
+CHABBLE.YouTubeClient = (function() {
     var youTubePlayer;
     var playState;
+    var playStates =
+    {
+        "unstarted": -1,
+        "ended": 0,
+        "playing": 1,
+        "paused": 2,
+        "buffering": 3,
+        "videoCued": 5
+    };
     var readyCallback;
-    
+    var finishedCallback;
+    var readyToPlay;
+
     function playYouTubeVideo(videoId, startTime) {
+        var currentTime = youTubePlayer.getCurrentTime();
+        var outBy = Math.abs(currentTime - startTime);
+
+        if ((playState === playStates.playing && outBy < 10) || playState === playStates.buffering)
+            return;
+
         youTubePlayer.cueVideoById({
             videoId: videoId,
             startSeconds: startTime
         });
-        
+
         youTubePlayer.playVideo();
     }
-    
+
     function iFrameReady() {
         youTubePlayer = new YT.Player("player", {
             playerVars: {
@@ -29,48 +46,57 @@ CHABBLE.YouTubeClient = (function () {
             }
         });
     }
-    
+
     function initPlayer() {
+        readyToPlay = false;
         var tag = document.createElement("script");
-        
+
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName("script")[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        
-        window.onYouTubeIframeAPIReady = function () {
+
+        window.onYouTubeIframeAPIReady = function() {
             iFrameReady();
         };
 
     }
-    
+
     function onPlayerReady(event) {
-        readyCallback();
+        if (typeof readyCallback !== "undefined")
+            readyCallback();
+        readyToPlay = true;
     }
-    
+
     function onStateChange(event) {
         playState = event.data;
-        console.log(playState);
-        if (playState === 1) {
-            
+
+        if (playState === 0) {
+            if (typeof finishedCallback !== "undefined") {
+                finishedCallback();
+            }
         }
     }
-    
+
     function stopVideo() {
         youTubePlayer.stopVideo();
     }
-    
+
     return {
-        init: function () {
+        Init: function() {
             initPlayer();
         },
-        play: function (videoId, startTime) {
+        Play: function(videoId, startTime) {
             playYouTubeVideo(videoId, startTime);
         },
-        stop: function () {
+        Stop: function() {
             stopVideo();
         },
-        playerReady: function (callback) {
+        PlayerReady: readyToPlay,
+        OnPlayerReady: function(callback) {
             readyCallback = callback;
+        },
+        OnVideoFinished: function(callback) {
+            finishedCallback = callback;
         }
     };
 })();
