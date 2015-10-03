@@ -1,4 +1,4 @@
-var server = require("./lib/app");
+var server = require("./lib/app").create();
 
 
 var port = process.env.PORT || 8001;

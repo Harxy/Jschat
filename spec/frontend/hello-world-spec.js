@@ -7,7 +7,7 @@ describe('Basic page load checks', function() {
 
     beforeEach(function() {
         browser = new Browser();
-        app = App.listen(8001);
+        app = App.create().listen(8001);
     });
 
     afterEach(function() {
@@ -27,5 +27,4 @@ describe('Basic page load checks', function() {
             done();
         });
     });
-
 });
