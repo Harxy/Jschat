@@ -7,4 +7,4 @@ node_js:
   - "iojs"
 before_script:
   - npm install
-script: node node_modules/gulp/bin/gulp.js default
+script: node node_modules/gulp/bin/gulp.js everything
