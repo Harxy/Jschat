@@ -1,0 +1,8 @@
+{
+  "node": true,
+  "browser": true,
+  "bitwise": true,
+  "noarg": true,
+  "undef": true,
+  "unused": "vars"
+}
