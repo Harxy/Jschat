@@ -103,7 +103,8 @@ function heartbeatReceived(users) {
     var userList = userBlock.find(".online-users ul");
     userList.empty();
     $.each(users, function(key, user) {
-        userList.append("<li>" + user + "</li>");
+        var cleanedName = $('<div/>').html(user).text();
+        userList.append("<li>" + cleanedName + "</li>");
     });
 };
 
@@ -121,9 +122,9 @@ function addToScreen(name, message, timeString) {
     if (twemoji.parse) {
         message = twemoji.parse(message, { size: 16 });
     }
-
+    var cleanedName = $('<div/>').html(name).text();
     var $newMessage = $("<div class=\"message\"></div>")
-        .append("<div class=\"name\">" + name + "<span>" + timeString + "</span></div>")
+        .append("<div class=\"name\">" + cleanedName + "<span>" + timeString + "</span></div>")
         .append("<div class=\"body\">" + message + "</div>");
     $("#output").prepend($newMessage);
 }
