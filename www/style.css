@@ -1,159 +1,73 @@
-.header {
-    width: auto;
-    padding: 2px;
+h1, .h1 { color: #3F2860; }
+
+h4, .h4 { color: #ef6d38; }
+
+.message { margin: 5px; }
+
+.message .body {
+    display: inline-block;
+    margin-left: 5px;
+    position: relative;
 }
 
-#name {
-    margin-left: 3px;
+.message .body img {
+    max-height: 450px;
+    max-width: 250px;
 }
 
-#output p {
-    padding: 0px;
-    margin-bottom: 3px;
-    margin-top: 3px;
-    width: 75%;
+.message .name {
+    display: inline-block;
+    font-weight: bold;
+    position: relative;
+    vertical-align: top;
 }
 
-    #output p:nth-child(even) {
-        background-color: #fafafa;
-    }
+.message .name span:before { content: " ("; }
 
-#input {
-    float: left;
-    width: 75%;
-}
-.backbutton {
-  padding: 2px;
-  font-weight: bold;
-}
-.info {
-    float: right;
-    width: 24%;
+.message .name span {
+    font-size: 12px;
+    font-weight: normal;
 }
 
+.message .name span:after { content: "):"; }
 
-.chat-area {
-    width: 75%;
-}
-
-.message {
-    margin: 5px;
-}
-
-    .message .body img {
-        max-width: 250px;
-        max-height: 450px;
-    }
-
-
-    .message .name {
-        display: inline-block;
-        position: relative;
-        vertical-align: top;
-        font-weight: bold;
-    }
-
-        .message .name span:before {
-            content: " (";
-        }
-
-        .message .name span {
-            font-weight: normal;
-            font-size: 12px;
-        }
-
-            .message .name span:after {
-                content: "):";
-            }
-
-    .message .body {
-        margin-left: 5px;
-        display: inline-block;
-        position: relative;
-        width: -moz-calc(100% - 100px);
-        width: -webkit-calc(100% - 100px);
-        width: calc(100% - 100px);
-    }
-
-.message img.emoji {
-    vertical-align: middle;
-}
-
-.bubble-theme .message .name {
-    width: 82px;
-    padding-top: 6px;
-}
-
-    .bubble-theme .message .name span {
-        display: block;
-    }
-
-.bubble-theme .message .body {
-    min-height: 22px;
-    padding: 7px 9px;
-    background: #E8CE6E;
-    -webkit-border-radius: 9px;
-    -moz-border-radius: 9px;
-    border-radius: 9px;
-    margin-left: 20px;
-    width:auto;
-}
-
-    .bubble-theme .message .body:after {
-        content: '';
-        position: absolute;
-        border-style: solid;
-        border-width: 10px 20px 10px 0;
-        border-color: transparent #E8CE6E;
-        display: block;
-        width: 0;
-        z-index: 1;
-        left: -20px;
-        top: 7px;
-    }
-
-
-.broken-theme div:nth-child(2n+1).message {
-    transform: rotate(-2deg);
-}
-.broken-theme div:nth-child(3n+4).message {
-    transform: rotate(-1deg);
-    font-size: smaller;
-}
-.broken-theme .message {
-    filter: opacity(66%);
-    -webkit-filter: opacity(66%);
-}
-
-.broken-theme .message {
-    animation-duration: 1s;
-    animation-name: broken-appear;
-}
-
-@keyframes broken-appear {
-    from {
-        height: 0%;
-        font-size: xx-large;
-    }
-
-    to {
-        font-size: inherit;
-        height: 100%;
-    }
-}
+.message img.emoji { vertical-align: middle; }
 
 .user-list {
-    list-style: none;
-    padding:0;
-    margin:0;
+    display: none;
+    margin-bottom: 15px;
 }
 
-.user-list li { 
-    padding-left: 1em; 
-    text-indent: -.7em;
+.user-list .online-users div, .user-list .recent-rooms div {
+    color: #ef6d38;
+    display: inline;
+    font-weight: bold;
+    padding-right: 5px;
 }
 
-.user-list li:before {
-    content: "• ";
-    color: green;
+.user-list ul { display: inline; }
+
+.user-list div span { font-style: italic; }
+
+.user-list .online-users li {
+    -moz-box-shadow: -1px 1px 5px 0px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: -1px 1px 5px 0px rgba(0, 0, 0, 0.75);
+    background-color: #7A9A95;
+    box-shadow: -1px 1px 5px 0px rgba(0, 0, 0, 0.75);
+    color: white;
+    margin: 2px;
+    padding: 0 6px;
+}
+
+.now-playing {
+    font-weight: bold;
+    padding: 10px;
+}
+
+.youtube-container {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .recent-rooms { text-align: left; }
 }
