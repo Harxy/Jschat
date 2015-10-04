@@ -54,10 +54,6 @@ $(function () {
 
     CHABBLE.YouTubeClient.Init();
 
-    $('#simulate-media-request').click(function() {
-        CHABBLE.ChatClient.SimulateMediaRequest();
-        return false;
-    });
 });
 
 function playYoutubeVideo(videoId, offset, user, title) {
