@@ -16,6 +16,11 @@ CHABBLE.YouTubeClient = (function() {
     var finishedCallback;
     var readyToPlay;
 
+    var audioStates = {
+        "mute": 0,
+        "unmute": 1
+    };
+
     function playYouTubeVideo(videoId, startTime) {
         var currentTime = youTubePlayer.getCurrentTime();
         var outBy = Math.abs(currentTime - startTime);
@@ -45,6 +50,14 @@ CHABBLE.YouTubeClient = (function() {
                 'onStateChange': onStateChange
             }
         });
+    }
+    
+    function setAudioState(audioState) {
+        if (audioState === audioStates.mute) {
+            youTubePlayer.mute();
+        } else if (audioState === audioStates.unmute) {
+            youTubePlayer.unMute();
+        }
     }
 
     function initPlayer() {
@@ -97,6 +110,12 @@ CHABBLE.YouTubeClient = (function() {
         },
         OnVideoFinished: function(callback) {
             finishedCallback = callback;
+        },
+        Mute: function() {
+            setAudioState(audioStates.mute);
+        },
+        UnMute: function () {
+            setAudioState(audioStates.unmute);
         }
     };
 })();

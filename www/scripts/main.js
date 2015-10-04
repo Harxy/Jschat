@@ -7,6 +7,8 @@ var nowPlayingTitleField;
 
 var youtubeContainer;
 
+var roomIsMuted;
+
 $(function () {
     userNameField = $("#name");
     roomNameField = $("#room-name");
@@ -47,6 +49,20 @@ $(function () {
     });
 
     messageField.focus();
+
+    $("#mute-audio").on('click', function () {
+        if (roomIsMuted) {
+            $(this).removeClass('glyphicon-volume-off');
+            $(this).addClass('glyphicon-volume-up');
+            CHABBLE.YouTubeClient.UnMute();
+        } else {
+            $(this).removeClass('glyphicon-volume-up');
+            $(this).addClass('glyphicon-volume-off');
+            CHABBLE.YouTubeClient.Mute();
+        }
+
+        roomIsMuted = !roomIsMuted;
+    });
 
     CHABBLE.YouTubeClient.OnVideoFinished(function () {
         hideYoutubePlayer();
