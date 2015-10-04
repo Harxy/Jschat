@@ -1,11 +1,21 @@
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
+var jscs = require('gulp-jscs');
+
 var jasmine = require('gulp-jasmine');
 
-gulp.task('lint', function() {
+gulp.task('lint', ['jshint', 'jscs']);
+
+gulp.task('jshint', function() {
     return gulp.src('./lib/**/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
+        .pipe(jshint.reporter('fail'));
+});
+gulp.task('jscs', function() {
+    return gulp.src('./lib/**/*.js')
+        .pipe(jscs())
+        .pipe(jscs.reporter())
         .pipe(jshint.reporter('fail'));
 });
 
