@@ -5,7 +5,8 @@ var jasmine = require('gulp-jasmine');
 gulp.task('lint', function() {
     return gulp.src('./lib/**/*.js')
         .pipe(jshint())
-        .pipe(jshint.reporter('default'));
+        .pipe(jshint.reporter('default'))
+        .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('jasmine-backend', function () {
