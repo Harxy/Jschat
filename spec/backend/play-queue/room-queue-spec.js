@@ -9,10 +9,20 @@ var newExampleItem = function(itemData, itemRequester) {
 };
 
 describe("A single room queue that updates when told what the time is", function() {
-    var queue;
+    var queue, storage;
 
     beforeEach(function () {
-        queue = roomQueue.new();
+        storage = require("../../../lib/storage/null-play-queue")
+            .new('room-test');
+        queue = roomQueue.new(storage);
+
+        spyOn(storage, 'storeQueueUpNext');
+        spyOn(storage, 'storeQueueCurrent');
+    });
+
+    afterEach(function() {
+        storage.storeQueueUpNext.calls.reset();
+        storage.storeQueueCurrent.calls.reset();
     });
 
     it("accepts items given to add", function() {
@@ -21,9 +31,22 @@ describe("A single room queue that updates when told what the time is", function
     });
 
     it("queued items are stored", function() {
-        var item =newExampleItem({}, "steve");
+        var item = newExampleItem({}, "steve");
         queue.add(item);
         expect(queue.getAll()).toEqual([item]);
+    });
+
+    it("Queueing an item updates the storage", function() {
+        var firstItem = newExampleItem({}, "oli");
+        var secondItem = newExampleItem({}, "paul");
+
+        queue.add(firstItem);
+        expect(storage.storeQueueUpNext.calls.mostRecent().args)
+            .toEqual([[firstItem]]);
+
+        queue.add(secondItem);
+        expect(storage.storeQueueUpNext.calls.mostRecent().args)
+            .toEqual([[firstItem, secondItem]]);
     });
 
     it("can be checked if it's empty", function() {
@@ -45,6 +68,30 @@ describe("A single room queue that updates when told what the time is", function
 
         // Only the second item should still be in the queue
         expect(queue.getAll()).toEqual([second]);
+    });
+
+    it("Starting to play the first item updates the persisted current state", function() {
+        var item = newExampleItem({}, "steve");
+        queue.add(item);
+
+        var now = Date.now();
+        queue.tick(now);
+
+        var expectedCurrent = { data: {}, requester: 'steve', duration: 400, startTime: now };
+        expect(storage.storeQueueCurrent.calls.mostRecent().args)
+            .toEqual([expectedCurrent]);
+    });
+
+
+    it("Starting to play the first item updates the persisted pending queue", function() {
+        var item = newExampleItem({}, "steve");
+        queue.add(item);
+
+        queue.tick(Date.now());
+
+        var emptyQueue = [];
+        expect(storage.storeQueueUpNext.calls.mostRecent().args)
+            .toEqual([emptyQueue]);
     });
 
     it("returns null on ticks on an empty queue", function() {
@@ -129,6 +176,23 @@ describe("A single room queue that updates when told what the time is", function
         expect(queue.tick(startTime + pastFirstduration + 1000)).toEqual(null);
         expect(queue.tick(startTime + pastFirstduration + 3000)).toEqual(null);// still not 5 seconds
         expect(queue.tick(startTime + pastFirstduration + 5001)).toEqual(expectedThirdResponse);
+    });
+
+    it("After 5 seconds the current persisted state is cleared ", function() {
+        var itemOneData = {"name": "first"};
+        var itemRequester = "steve";
+        var itemOne = newExampleItem(itemOneData, itemRequester);
+
+        queue.add(itemOne);
+
+        var startTime = 1421092800;
+        queue.tick(startTime);
+
+        var pastFirstduration = 401;
+        queue.tick(startTime + pastFirstduration + 5001);
+        expect(storage.storeQueueCurrent.calls.mostRecent().args)
+            .toEqual([null]);
+
     });
 
 });
