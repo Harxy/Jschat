@@ -16,6 +16,7 @@ CHABBLE.YouTubeClient = (function() {
     var finishedCallback;
     var readyToPlay;
 
+    var audioState;
     var audioStates = {
         "mute": 0,
         "unmute": 1
@@ -52,13 +53,15 @@ CHABBLE.YouTubeClient = (function() {
         });
     }
     
-    function setAudioState(audioState) {
-        if (audioState === audioStates.mute) {
+    function setAudioState(state) {
+        if (state === audioStates.mute) {
             youTubePlayer.mute();
-        } else if (audioState === audioStates.unmute) {
+        } else if (state === audioStates.unmute) {
             youTubePlayer.unMute();
         }
+        audioState = state;
     }
+    
 
     function initPlayer() {
         readyToPlay = false;
@@ -67,6 +70,8 @@ CHABBLE.YouTubeClient = (function() {
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName("script")[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        playState = playStates.unstarted;
 
         window.onYouTubeIframeAPIReady = function() {
             iFrameReady();
@@ -116,6 +121,8 @@ CHABBLE.YouTubeClient = (function() {
         },
         UnMute: function () {
             setAudioState(audioStates.unmute);
+        }, IsPlaying: function () {
+            return (playState !== playStates.unstarted && playState !== playStates.ended);
         }
     };
 })();

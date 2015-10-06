@@ -7,7 +7,11 @@ var nowPlayingTitleField;
 
 var youtubeContainer;
 
-var roomIsMuted;
+var muteAudioButton;
+var roomAudioMuted;
+
+var hideVideoButton;
+var roomVideoHidden;
 
 $(function () {
     userNameField = $("#name");
@@ -16,6 +20,9 @@ $(function () {
     
     nowPlayingUserField = $("#now-playing-user");
     nowPlayingTitleField = $("#now-playing-title");
+
+    muteAudioButton = $("#mute-audio");
+    hideVideoButton = $("#hide-video");
     
     youtubeContainer = $('.youtube-container');
 
@@ -29,7 +36,7 @@ $(function () {
     loadHistory(roomName);
     setLastRoomName(roomName);
     getRecentRoomNames();
-
+    
     CHABBLE.ChatClient.Init(client, roomName, userName);
     CHABBLE.ChatClient.OnNewMessageReceived(newMessageReceived);
     CHABBLE.ChatClient.OnHearbeatReceived(heartbeatReceived);
@@ -51,37 +58,76 @@ $(function () {
     messageField.focus();
 
     $("#mute-audio").on('click', function () {
-        if (roomIsMuted) {
-            $(this).removeClass('glyphicon-volume-off');
-            $(this).addClass('glyphicon-volume-up');
-            CHABBLE.YouTubeClient.UnMute();
-        } else {
-            $(this).removeClass('glyphicon-volume-up');
-            $(this).addClass('glyphicon-volume-off');
-            CHABBLE.YouTubeClient.Mute();
-        }
-
-        roomIsMuted = !roomIsMuted;
+        setRoomAudioMuted(!roomAudioMuted);
     });
+    
+    
+    $("#hide-video").on('click', function () {
+        setRoomVideoHidden(!roomVideoHidden, true);
+    });
+    
 
     CHABBLE.YouTubeClient.OnVideoFinished(function () {
-        hideYoutubePlayer();
+        setRoomVideoHidden(true);
+        setNowPlaying('Nobody', 'anything');
+    });
+
+    CHABBLE.YouTubeClient.OnPlayerReady(function () {
+        var audioCookie = readCookie("audioMuted");
+        if (audioCookie !== null && audioCookie === "true")
+            setRoomAudioMuted(true);
+        else
+            setRoomAudioMuted(false);
+        
+        
+        var videoCookie = readCookie("videoHidden");
+        if (videoCookie !== null && videoCookie === "true")
+            setRoomVideoHidden(true,true);
+        else
+            setRoomVideoHidden(false,true);
     });
 
     CHABBLE.YouTubeClient.Init();
-
 });
 
-function playYoutubeVideo(videoId, offset, user, title) {
-    youtubeContainer.show(250);
-    setNowPlaying(user, title);
-    CHABBLE.YouTubeClient.Play(videoId, offset);
+function setToolbarIconCrossState(target, displayCross) {
+    var icon = target.find(".fa-ban");
+    if (displayCross) {
+        icon.show();
+    } else {
+        icon.hide();
+    }
 }
 
-function hideYoutubePlayer() {
-    CHABBLE.YouTubeClient.Stop();
-    youtubeContainer.hide(250);
-    setNowPlaying('Nobody', 'anything');
+function setRoomAudioMuted(muted) {
+    if (muted) {
+        CHABBLE.YouTubeClient.Mute();
+    } else {
+        CHABBLE.YouTubeClient.UnMute();
+    }
+    createCookie("audioMuted", muted, 30);
+    setToolbarIconCrossState(muteAudioButton, muted);
+    roomAudioMuted = muted;
+}
+
+function setRoomVideoHidden(hidden, setDefault) {
+    if (setDefault) {
+        setToolbarIconCrossState(hideVideoButton, hidden);
+        roomVideoHidden = hidden;
+        createCookie("videoHidden", hidden, 30);
+    }
+
+    if (!roomVideoHidden && !hidden && CHABBLE.YouTubeClient.IsPlaying())
+        youtubeContainer.show(250);
+    else
+        youtubeContainer.hide(250);
+}
+
+
+function playYoutubeVideo(videoId, offset, user, title) {
+    setRoomVideoHidden(false);
+    setNowPlaying(user, title);
+    CHABBLE.YouTubeClient.Play(videoId, offset);
 }
 
 function setNowPlaying(name, title) {
@@ -106,6 +152,7 @@ function getRoomNameFromUrl() {
 
 function getLastUsername() {
     var storedUsername = readCookie("username");
+    
     if (!storedUsername)
         storedUsername = "Anon";
 

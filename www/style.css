@@ -68,6 +68,14 @@ h4, .h4 { color: #ef6d38; }
     display: none;
 }
 
+
+.toolbar .fa-ban {
+    display: none;
+}
+
+
+
 @media (max-width: 767px) {
     .recent-rooms { text-align: left; }
+    .toolbar { text-align: left; }
 }
