@@ -13,6 +13,7 @@ describe("A single room queue that updates when told what the time is", function
 
     beforeEach(function () {
         storage = require("../../../lib/storage/null-play-queue")
+            .start()
             .new('room-test');
         queue = roomQueue.new(storage);
 
