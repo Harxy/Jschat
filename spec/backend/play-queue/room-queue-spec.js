@@ -18,11 +18,13 @@ describe("A single room queue that updates when told what the time is", function
 
         spyOn(storage, 'storeQueueUpNext');
         spyOn(storage, 'storeQueueCurrent');
+        spyOn(storage, 'loadRememberQueueState');
     });
 
     afterEach(function() {
         storage.storeQueueUpNext.calls.reset();
         storage.storeQueueCurrent.calls.reset();
+        storage.loadRememberQueueState.calls.reset();
     });
 
     it("accepts items given to add", function() {
@@ -192,6 +194,13 @@ describe("A single room queue that updates when told what the time is", function
         queue.tick(startTime + pastFirstduration + 5001);
         expect(storage.storeQueueCurrent.calls.mostRecent().args)
             .toEqual([null]);
+
+    });
+
+    it("can be reset to a persisted state", function() {
+        queue.initFromStorage();
+        expect(storage.loadRememberQueueState.calls.count())
+            .toEqual(1);
 
     });
 
