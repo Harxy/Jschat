@@ -55,8 +55,24 @@ describe("The queue-me extension takes 'queue me link' and passes the link to th
       });
     });
 
-   it("surrounded by brackets", function(done) {
+   it("surrounded by square brackets", function(done) {
       var message = messageWithText("queue me [https://youtu.be/kfVsfOSbJY0]");
+      handler(message, function(updatedMessage) {
+          expect(playQueue.queueItem).toHaveBeenCalledWith(
+                  'logging-test', 
+                  { data: 
+                      {   'service': 'youtube', 
+                          id: 'kfVsfOSbJY0', 
+                          title: 'Friday - Rebecca Black - Official Music Video' 
+                      }, 
+                      duration: 228000, requester: 'Mctest'
+                  });
+          done();
+      });
+    });
+
+   it("surrounded by round brackets", function(done) {
+      var message = messageWithText("queue me (https://youtu.be/kfVsfOSbJY0)");
       handler(message, function(updatedMessage) {
           expect(playQueue.queueItem).toHaveBeenCalledWith(
                   'logging-test', 
