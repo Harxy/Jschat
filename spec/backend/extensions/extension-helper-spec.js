@@ -52,3 +52,21 @@ describe("The extension helper provides a CheckMessageForKeyword function which"
         expect(checkMessageForKeyword(message, "keyword me", true)).toBe("https://www.youtube.com/watch?v=tXcgt6l_LcA");
     });
 });
+
+describe('The parseURL', function () {
+    var parseURL = extensionHelper.parseURL;
+    var url = 'https://www.youtube.com/watch?v=kfVsfOSbJY0';
+
+    it ("returns the subdomain of a url if one is provided", function() {
+        expect(parseURL(url).subdomain).toBe('www');
+    });
+
+    it ("returns the host of a url if one is provided", function() {
+        expect(parseURL(url).host).toBe('youtube');
+    });
+
+    it ("returns the host of a top level domain if one is provided", function() {
+        expect(parseURL(url).tld).toBe('com');
+    });
+
+});
