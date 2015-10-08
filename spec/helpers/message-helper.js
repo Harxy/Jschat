@@ -2,8 +2,10 @@ var messageWithText = function(text) {
     return {
         channel: "/rooms/logging-test",
         data: {
-            text: text
+            text: text,
+            name: 'Mctest'
         }
+
     };
 };
 
