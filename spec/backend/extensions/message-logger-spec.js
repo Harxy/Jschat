@@ -1,13 +1,14 @@
 var messageLogging = require("../../../lib/extensions/message-logger");
 var messageHelper = require("../../helpers/message-helper.js");
 
-var expectMessageToMatch = messageHelper.expectMessageToMatch;
 var messageWithText = messageHelper.messageWithText;
+var customMessageMatchers = messageHelper.custom_mactchers;
 
 describe("The message logger wraps data storage and provides and extension", function() {
     var handler, dataStore;
 
     beforeEach(function() {
+        jasmine.addMatchers(customMessageMatchers);
         dataStore = {
             storeMessage: function (room, message){}
         };
@@ -20,7 +21,7 @@ describe("The message logger wraps data storage and provides and extension", fun
         var message = messageWithText("I'm a little message and I'm okay");
         var expectedMessage = messageWithText("I'm a little message and I'm okay");
         handler(message, function(updatedMessage) {
-            expectMessageToMatch(updatedMessage, expectedMessage);
+            expect(updatedMessage).toMatchMessage(expectedMessage);
         });
     });
 
