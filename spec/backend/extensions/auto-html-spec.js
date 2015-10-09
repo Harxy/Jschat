@@ -2,7 +2,7 @@ autoHtmlExtension = require("../../../lib/extensions/auto-html");
 var messageHelper = require("../../helpers/message-helper.js");
 
 var messageWithText = messageHelper.messageWithText;
-var customMessageMatchers = messageHelper.custom_mactchers;
+var customMessageMatchers = messageHelper.custom_matchers;
 
 describe("The auto html provides an incoming handler", function() {
     var handler = autoHtmlExtension.incoming;

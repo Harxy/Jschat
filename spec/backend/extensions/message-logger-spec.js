@@ -2,7 +2,7 @@ var messageLogging = require("../../../lib/extensions/message-logger");
 var messageHelper = require("../../helpers/message-helper.js");
 
 var messageWithText = messageHelper.messageWithText;
-var customMessageMatchers = messageHelper.custom_mactchers;
+var customMessageMatchers = messageHelper.custom_matchers;
 
 describe("The message logger wraps data storage and provides and extension", function() {
     var handler, dataStore;

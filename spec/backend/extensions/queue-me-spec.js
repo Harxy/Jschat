@@ -1,7 +1,7 @@
 var queueMeExtension = require("../../../lib/extensions/queue-me.js");
 var messageHelper = require("../../helpers/message-helper.js");
 
-var customMessageMatchers = messageHelper.custom_mactchers;
+var customMessageMatchers = messageHelper.custom_matchers;
 var messageWithText = messageHelper.messageWithText;
 
 describe("The queue-me extension takes 'queue me link' and passes the link to the queue", function() {

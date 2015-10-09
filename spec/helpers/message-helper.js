@@ -25,7 +25,7 @@ var expectMessageToMatch = function (updatedMessage, expectedMessage) {
         .toBe(getMessageText(expectedMessage));
 };
 
-var custom_mactchers = {
+var custom_matchers = {
     toMatchMessage: function(util, customEqualityTesters) {
         return {
             compare: function(actual, expected) {
@@ -48,4 +48,4 @@ var custom_mactchers = {
 exports.messageWithText = messageWithText;
 exports.messageWithoutText = messageWithoutText;
 exports.expectMessageToMatch = expectMessageToMatch;
-exports.custom_mactchers = custom_mactchers;
+exports.custom_matchers = custom_matchers;
