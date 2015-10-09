@@ -1,12 +1,14 @@
 var queueMeExtension = require("../../../lib/extensions/queue-me.js");
-var messageHelper = require("../../helpers/message-helper.js"); 
-var expectMessageToMatch = messageHelper.expectMessageToMatch;
+var messageHelper = require("../../helpers/message-helper.js");
+
+var customMessageMatchers = messageHelper.custom_matchers;
 var messageWithText = messageHelper.messageWithText;
 
 describe("The queue-me extension takes 'queue me link' and passes the link to the queue", function() {
     var handler, request, playQueue;
 
     beforeEach(function() {
+        jasmine.addMatchers(customMessageMatchers);
         playQueue = {
             queueItem: function (room, data){}
         };
@@ -18,7 +20,7 @@ describe("The queue-me extension takes 'queue me link' and passes the link to th
         var message = messageWithText("I'm a little message and I'm okay");
         var expectedMessage = messageWithText("I'm a little message and I'm okay");
         handler(message, function(updatedMessage) {
-            expectMessageToMatch(updatedMessage, expectedMessage);
+            expect(updatedMessage).toMatchMessage(expectedMessage);
             done();
         });
     });
