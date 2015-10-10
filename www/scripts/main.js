@@ -2,8 +2,7 @@
 var roomNameField;
 var messageField;
 
-var nowPlayingUserField;
-var nowPlayingTitleField;
+var nowPlayingMessage;
 
 var youtubeContainer;
 
@@ -17,9 +16,8 @@ $(function () {
     userNameField = $("#name");
     roomNameField = $("#room-name");
     messageField = $("#input");
-    
-    nowPlayingUserField = $("#now-playing-user");
-    nowPlayingTitleField = $("#now-playing-title");
+
+    nowPlayingMessage = $("#now-playing-message");
 
     muteAudioButton = $("#mute-audio");
     hideVideoButton = $("#hide-video");
@@ -131,13 +129,22 @@ function playYoutubeVideo(videoId, offset, user, title) {
 }
 
 function setNowPlaying(name, title) {
-    nowPlayingUserField.text(name);
-    nowPlayingTitleField.text(title);
+    var text = "{name} is playing {title}"
+        .replace('{name}', name)
+        .replace('{title}', title);
+    nowPlayingMessage.text(text);
+}
+
+function loadingNextVideo() {
+    nowPlayingMessage.text("Loading next video...");
+    setRoomVideoHidden(true);
 }
 
 function mediaRequestRecieved(service, id, offset, user, title) {
     if (service === 'youtube') {
         playYoutubeVideo(id, offset, user, title);
+    } else if (service === 'waiting') {
+        loadingNextVideo();
     }
 }
 
