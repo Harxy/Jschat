@@ -19,7 +19,9 @@
     "jasmine": "~2.3.2",
     "jscs": "^2.2.1",
     "jshint": "~2.8.0",
-    "zombie": "4.0.8"
+    "phantomjs": "^1.9.18",
+    "webdriverio": "^3.2.5",
+    "webdriverjs": "^1.7.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
