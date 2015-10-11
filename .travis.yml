@@ -8,5 +8,5 @@ node_js:
 before_script:
   - npm install
 script:
-  - PATH="node_modules/phantomjs/bin:$PATH" java -jar 3rdparty/selenium-server-standalone-2.48.2.jar -port 4445&
+  - PATH="node_modules/phantomjs/bin:$PATH" java -jar 3rdparty/selenium-server-standalone-2.48.2.jar -port 4445 2&> selenium.log&
   - node node_modules/gulp/bin/gulp.js everything
