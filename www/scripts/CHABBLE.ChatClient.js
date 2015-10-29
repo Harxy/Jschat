@@ -17,11 +17,10 @@ CHABBLE.ChatClient = (function() {
         userName = username;
     }
 
-
     function subscribeToRoomMessages() {
         fayeClient.subscribe("/rooms/" + roomName, function(message) {
             if (typeof newMessageReceivedCallback !== "undefined")
-                newMessageReceivedCallback(message.name, message.text, message.timeString);
+                newMessageReceivedCallback(message.name, message.text, message.recipient, message.timeString);
         });
     }
 

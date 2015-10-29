@@ -171,15 +171,16 @@ function heartbeatReceived(users) {
     });
 };
 
-function newMessageReceived(name, message, timeString) {
-    addToScreen(name, message, timeString);
-    $.titleAlert("New!", {
-        requireBlur: true,
-        stopOnFocus: true,
-        interval: 700
-    });
+function newMessageReceived(name, message, recipient, timeString) {
+    if (shouldDisplayMessage(recipient)) {
+        addToScreen(name, message, timeString);
+        $.titleAlert("New!", {
+            requireBlur: true,
+            stopOnFocus: true,
+            interval: 700
+        });
+    }
 };
-
 
 function addToScreen(name, message, timeString) {
     if (twemoji.parse) {
@@ -252,4 +253,9 @@ function readCookie(name) {
 
 function eraseCookie(name) {
     createCookie(name, "", -1);
+}
+
+function shouldDisplayMessage(recipient) {
+    var currentUserName = userNameField.val();
+    return (typeof recipient === 'undefined' || recipient == '' || recipient.toUpperCase() == currentUserName.toUpperCase());
 }
