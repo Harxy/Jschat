@@ -27,6 +27,8 @@ gulp.task('jasmine-backend', function () {
 // Marking the front end tests as dependant on the backend tests
 // prevents an issue that jasmine has with running two lots in
 //  parallel
+// TODO: auto run the folloiwing
+// PATH="node_modules/phantomjs/bin:$PATH" java -jar 3rdparty/selenium-server-standalone-2.48.2.jar -port 4445
 gulp.task('jasmine-frontend', ['jasmine-backend'], function () {
     return gulp.src('./spec/frontend/**/*-spec.js')
         .pipe(jasmine());
