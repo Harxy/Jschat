@@ -1,26 +1,27 @@
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var jscs = require('gulp-jscs');
-
 var jasmine = require('gulp-jasmine');
 
-gulp.task('lint', ['jshint', 'jscs']);
+var testedBackendJavascript = './lib/**/*.js';
+var backendTestSpecs = './spec/backend/**/*-spec.js';
 
 gulp.task('jshint', function() {
-    return gulp.src('./lib/**/*.js')
+    return gulp.src(testedBackendJavascript)
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(jshint.reporter('fail'));
 });
+
 gulp.task('jscs', function() {
-    return gulp.src('./lib/**/*.js')
+    return gulp.src(testedBackendJavascript)
         .pipe(jscs())
         .pipe(jscs.reporter())
         .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('jasmine-backend', function () {
-    return gulp.src('./spec/backend/**/*-spec.js')
+    return gulp.src(backendTestSpecs)
         .pipe(jasmine());
 });
 
@@ -32,5 +33,13 @@ gulp.task('jasmine-frontend', ['jasmine-backend'], function () {
         .pipe(jasmine());
 });
 
+gulp.task('tests.watch', function () {
+    gulp.watch(testedBackendJavascript, ['test']);
+    gulp.watch(backendTestSpecs, ['test']);
+});
+
 gulp.task('default', ['lint', 'jasmine-backend']);
+
+gulp.task('test', ['default']);
+gulp.task('lint', ['jshint', 'jscs']);
 gulp.task('everything', ['lint', 'jasmine-backend', 'jasmine-frontend']);
