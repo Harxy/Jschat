@@ -150,7 +150,7 @@ describe("A single room queue that updates when told what the time is", function
         expect(queue.tick(startTime + nextTickDelay)).toEqual(expectedResponse);
     });
 
-    it("After 5 seconds the next queue item is emited on tick ", function() {
+    it("After 5 seconds the next queue item is emitted on tick ", function() {
         var itemOneData = {"name": "first"};
         var itemTwoData = {"name": "second"};
         var itemRequester = "steve";
@@ -175,9 +175,15 @@ describe("A single room queue that updates when told what the time is", function
             "playOffset": 0
         };
 
+        var waitingMessage = {
+            'data': {service: "waiting"},
+            "requester": "",
+            "playOffset": 0
+        };
+
         expect(queue.tick(startTime)).toEqual(expectedFirstResponse);
-        expect(queue.tick(startTime + pastFirstduration + 1000)).toEqual(null);
-        expect(queue.tick(startTime + pastFirstduration + 3000)).toEqual(null);// still not 5 seconds
+        expect(queue.tick(startTime + pastFirstduration + 1000)).toEqual(waitingMessage);
+        expect(queue.tick(startTime + pastFirstduration + 3000)).toEqual(waitingMessage);// still not 5 seconds
         expect(queue.tick(startTime + pastFirstduration + 5001)).toEqual(expectedThirdResponse);
     });
 
